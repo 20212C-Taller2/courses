@@ -1,0 +1,9 @@
+alembic~=1.7.3
+behave~=1.2.6
+fastapi~=0.68.1
+flake8~=3.9.2
+pre-commit~=2.15.0
+psycopg2~=2.9.1
+sqlalchemy~=1.4.23
+uvicorn[standard]~=0.15.0
+requests
