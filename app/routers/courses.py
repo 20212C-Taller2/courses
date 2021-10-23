@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -14,11 +14,11 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=List[schemas.Course])
+@router.get("", response_model=List[schemas.Course], status_code=status.HTTP_200_OK)
 def read_courses(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_courses(db, skip=skip, limit=limit)
 
 
-@router.post("", status_code=201, response_model=schemas.Course)
+@router.post("", response_model=schemas.Course, status_code=status.HTTP_201_CREATED)
 def create_course(course: schemas.CourseCreate, db: Session = Depends(get_db)):
     return crud.create_course(db=db, course=course)

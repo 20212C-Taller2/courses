@@ -4,15 +4,18 @@ campos
 """
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, PositiveInt
 
 
 class CourseBase(BaseModel):
     title: str
     description: Optional[str] = None
+    exams: PositiveInt
+
 
 class CourseCreate(CourseBase):
     pass
+
 
 class Course(CourseBase):
     id: int

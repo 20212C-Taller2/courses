@@ -12,3 +12,4 @@ class course(BaseModelDb):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(String, index=True)
+    exams = Column(Integer, nullable=False)

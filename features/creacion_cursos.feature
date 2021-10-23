@@ -8,11 +8,11 @@ Característica: Creación de curso
     Cuando un creador realice un nuevo curso con:
       | key         | value                 |
       | title       | titulo                |
-      | description | Descripcion del curso |
+      | description | Descripción del curso |
+      | exams       | 1                     |
 #      | tags             | Hashtags asociados para facilitar la búsqueda.                               |
 #      | type             | Se deberá elegir un tipo de curso dentro de los permitidos por la plataforma |
 #      | Fotos y/o videos | Material multimedia que acompañe                                             |
-#      | exams            | Cantidad de exámenes a realizar                                              |
 #      | subscription     | Tipo de suscripción asociada                                                 |
 #      | location         | Ubicación geografica del curso                                               |
     Entonces recibo el curso creado correctamente
@@ -23,7 +23,6 @@ Característica: Creación de curso
     Cuando lo consulto
     Entonces este curso podrá ser visualizado y realizado por los estudiantes.
 
-  @wip
   Escenario: Creación fallida
     Cuando un creador realice un nuevo curso con información faltante y/o erronea.
     Entonces el sistema deberá informarle que no es una operación permitida.
