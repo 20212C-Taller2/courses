@@ -79,3 +79,20 @@ def step_impl(context):
     body = context.response.json()
     for key in body:
         assert context.vars['created'][key] == body[key]
+
+
+@when(u'un creador realice un nuevo curso con "{}" faltante.')
+def step_impl(context, key):
+    course = create_course({})
+    del course[key]
+
+    context.response = context.client.post(
+        "/courses",
+        headers=json_headers(),
+        json=course
+    )
+
+
+@then(u'el sistema deberá informarle que no es una operación permitida.')
+def step_impl(context):
+    assert context.response.status_code == 422

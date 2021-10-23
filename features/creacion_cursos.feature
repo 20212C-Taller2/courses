@@ -23,7 +23,12 @@ Característica: Creación de curso
     Cuando lo consulto
     Entonces este curso podrá ser visualizado y realizado por los estudiantes.
 
-  @wip
-  Escenario: Creación fallida
-    Cuando un creador realice un nuevo curso con información faltante y/o erronea.
+  Esquema del escenario: Creación de curso con información insuficiente
+    Cuando un creador realice un nuevo curso con "<campo>" faltante.
     Entonces el sistema deberá informarle que no es una operación permitida.
+
+    Ejemplos:
+      | campo        |
+      | title        |
+      | exams        |
+      | subscription |
