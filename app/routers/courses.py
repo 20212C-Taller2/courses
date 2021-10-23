@@ -1,6 +1,7 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
-from typing import List
 
 from app import schemas
 from app.db import crud
@@ -22,3 +23,8 @@ def read_courses(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 @router.post("", response_model=schemas.Course, status_code=status.HTTP_201_CREATED)
 def create_course(course: schemas.CourseCreate, db: Session = Depends(get_db)):
     return crud.create_course(db=db, course=course)
+
+
+@router.get("/{course_id}", response_model=schemas.Course, status_code=status.HTTP_200_OK)
+def get_course(course_id: int, db: Session = Depends(get_db)):
+    return crud.get_course(db, course_id)

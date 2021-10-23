@@ -17,7 +17,7 @@ Característica: Creación de curso
 #      | location         | Ubicación geografica del curso                                               |
     Entonces recibo el curso creado correctamente
 
-  @wip
+
   Escenario: Consulta de curso
     Dado que existe un curso
     Cuando lo consulto

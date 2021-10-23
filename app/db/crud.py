@@ -15,3 +15,7 @@ def create_course(db: Session, course: schemas.CourseCreate):
     db.refresh(db_course)
 
     return db_course
+
+
+def get_course(db: Session, course_id: int):
+    return db.query(models.course).get(course_id)
