@@ -4,13 +4,15 @@ campos
 """
 from typing import Optional
 
-from pydantic import BaseModel, PositiveInt
+from app.domain.courses.model.subscription import Subscription
+from pydantic import BaseModel, PositiveInt, constr
 
 
 class CourseBase(BaseModel):
-    title: str
+    title: constr(min_length=1)
     description: Optional[str] = None
     exams: PositiveInt
+    subscription: Subscription
 
 
 class CourseCreate(CourseBase):

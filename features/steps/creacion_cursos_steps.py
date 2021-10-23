@@ -3,8 +3,11 @@ def create_course(replacement={}):
         "title": "title",
         "description": "description",
         "exams": 1,
+        "subscription": "free"
     }
+
     example_course.update(parse_course(replacement))
+
     return example_course
 
 
@@ -35,8 +38,9 @@ def step_impl(context):
 
 @then(u'recibo el curso creado correctamente')
 def step_impl(context):
-    assert context.response.status_code == 201
     request = context.vars['body']
-    response = context.response.json()
+    response_body = context.response.json()
+
+    assert context.response.status_code == 201
     for key in request:
-        assert response[key] == request[key]
+        assert response_body[key] == request[key]

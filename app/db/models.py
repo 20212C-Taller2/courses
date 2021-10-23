@@ -13,3 +13,4 @@ class course(BaseModelDb):
     title = Column(String, index=True)
     description = Column(String, index=True)
     exams = Column(Integer, nullable=False)
+    subscription = Column(String, nullable=False)
