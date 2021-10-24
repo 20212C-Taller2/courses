@@ -3,7 +3,7 @@ import unittest
 from app.domain.courses.model.subscription import Subscription
 from pydantic import ValidationError
 
-from app.schemas import CourseCreate
+from app.domain.courses.model.courses import CourseCreate
 from tests.examples.course_example import CourseExample
 
 

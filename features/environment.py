@@ -34,6 +34,7 @@ def before_feature(context, feature):
 
 def after_scenario(context, scenario):
     BaseModelDb.metadata.drop_all(engine)
+    BaseModelDb.metadata.create_all(engine)
 
 
 def after_all(context):

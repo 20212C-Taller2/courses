@@ -1,5 +1,5 @@
 from app.domain.courses.model.subscription import Subscription
-from app.schemas import CourseCreate
+from app.domain.courses.model.courses import CourseCreate
 
 
 class CourseExample(object):
