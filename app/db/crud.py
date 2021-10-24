@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from . import models
 from .. import schemas
+from ..domain.courses.model.course_exceptions import CourseNotFoundError
 
 
 def get_courses(db: Session, skip: int = 0, limit: int = 100):
@@ -18,4 +19,8 @@ def create_course(db: Session, course: schemas.CourseCreate):
 
 
 def get_course(db: Session, course_id: int):
-    return db.query(models.course).get(course_id)
+    course = db.query(models.course).get(course_id)
+    if not course:
+        raise CourseNotFoundError(course_id)
+
+    return course

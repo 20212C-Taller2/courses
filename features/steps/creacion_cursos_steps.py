@@ -81,6 +81,19 @@ def step_impl(context):
         assert context.vars['created'][key] == body[key]
 
 
+@when(u'consulto un curso que no existe')
+def step_impl(context):
+    context.response = context.client.get(
+        f'/courses/1',
+        headers=json_headers()
+    )
+
+
+@then(u'recibo un mensaje de error')
+def step_impl(context):
+    assert context.response.status_code == 404
+
+
 @when(u'un creador realice un nuevo curso con "{}" faltante.')
 def step_impl(context, key):
     course = create_course({})
