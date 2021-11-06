@@ -3,7 +3,8 @@ def create_course(replacement: dict):
         "title": "title",
         "description": "description",
         "exams": 1,
-        "subscription": "free"
+        "subscription": "free",
+        "type": "WEB_DEV"
     }
 
     example_course.update(parse_course(replacement))
@@ -118,6 +119,20 @@ def step_impl(context):
     )
 
 @then(u'recibo una lista con los distintos tipos de suscripciones')
+def step_impl(context):
+    body = context.response.json()
+
+    assert context.response.status_code == 200
+    assert isinstance(body, list)
+
+@when(u'consulto los tipos de cursos que ofrece la plataforma')
+def step_impl(context):
+    context.response = context.client.get(
+        "/courses/types",
+        headers=json_headers()
+    )
+
+@then(u'recibo una lista con los distintos tipos de cursos')
 def step_impl(context):
     body = context.response.json()
 

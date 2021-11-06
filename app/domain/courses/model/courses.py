@@ -5,6 +5,7 @@ campos
 from typing import Optional
 
 from app.domain.courses.model.subscription import Subscription
+from app.domain.courses.model.course_type import CourseType
 from pydantic import BaseModel, PositiveInt, constr
 
 
@@ -13,6 +14,7 @@ class CourseBase(BaseModel):
     description: Optional[str] = None
     exams: PositiveInt
     subscription: Subscription
+    type: CourseType
 
 
 class CourseCreate(CourseBase):

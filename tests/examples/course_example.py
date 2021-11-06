@@ -8,10 +8,11 @@ class CourseExample(object):
         self.description = 'description'
         self.exams = 1
         self.subscription = Subscription.FREE
+        self.type = 'WEB_DEV'
 
     def build(self):
         return CourseCreate(title=self.title, description=self.description, exams=self.exams,
-                            subscription=self.subscription)
+                            subscription=self.subscription, type=self.type)
 
     def with_title(self, value):
         self.title = value
@@ -27,4 +28,8 @@ class CourseExample(object):
 
     def with_subscription(self, value):
         self.subscription = value
+        return self
+
+    def with_type(self, value):
+        self.type = value
         return self

@@ -11,9 +11,9 @@ Característica: Creación de curso
       | description  | Descripción del curso |
       | exams        | 1                     |
       | subscription | free                  |
+      | type         | WEB_DEV               |
 #     | creator      | usuario               |
 #     | tags             | Hashtags asociados para facilitar la búsqueda.                               |
-#     | type             | Se deberá elegir un tipo de curso dentro de los permitidos por la plataforma |
 #     | Fotos y/o videos | Material multimedia que acompañe                                             |
 #     | location         | Ubicación geografica del curso                                               |
     Entonces recibo el curso creado correctamente
@@ -37,7 +37,12 @@ Característica: Creación de curso
       | title        |
       | exams        |
       | subscription |
+      | type         |
 
   Escenario: Consulta de tipos de suscripciones
     Cuando consulto las suscripciones
     Entonces recibo una lista con los distintos tipos de suscripciones
+
+  Escenario: Consulta de tipos de cursos
+    Cuando consulto los tipos de cursos que ofrece la plataforma
+    Entonces recibo una lista con los distintos tipos de cursos
