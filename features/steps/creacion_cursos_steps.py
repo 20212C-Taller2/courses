@@ -109,3 +109,17 @@ def step_impl(context, key):
 @then(u'el sistema deberá informarle que no es una operación permitida.')
 def step_impl(context):
     assert context.response.status_code == 422
+
+@when(u'consulto las suscripciones')
+def step_impl(context):
+    context.response = context.client.get(
+        "/courses/subscriptions",
+        headers=json_headers()
+    )
+
+@then(u'recibo una lista con los distintos tipos de suscripciones')
+def step_impl(context):
+    body = context.response.json()
+
+    assert context.response.status_code == 200
+    assert isinstance(body, list)

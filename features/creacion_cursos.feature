@@ -37,3 +37,7 @@ Característica: Creación de curso
       | title        |
       | exams        |
       | subscription |
+
+  Escenario: Consulta de tipos de suscripciones
+    Cuando consulto las suscripciones
+    Entonces recibo una lista con los distintos tipos de suscripciones
