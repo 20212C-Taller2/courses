@@ -5,25 +5,51 @@ Característica: Creación de curso
   Para que realicen los estudiantes que se inscriban al mismo y poder obtener o no ganancias por esto.
 
   Escenario: Creación Exitosa
-    Cuando un creador realice un nuevo curso con:
-      | key         | value                 |
-      | title       | titulo                |
-      | description | Descripcion del curso |
-#      | tags             | Hashtags asociados para facilitar la búsqueda.                               |
-#      | type             | Se deberá elegir un tipo de curso dentro de los permitidos por la plataforma |
-#      | Fotos y/o videos | Material multimedia que acompañe                                             |
-#      | exams            | Cantidad de exámenes a realizar                                              |
-#      | subscription     | Tipo de suscripción asociada                                                 |
-#      | location         | Ubicación geografica del curso                                               |
+    Dado que un creador realiza un nuevo curso con:
+      | key          | value                 |
+      | title        | titulo                |
+      | description  | Descripción del curso |
+      | exams        | 1                     |
+      | subscription | free                  |
+      | type         | WEB_DEV               |
+      | creator      | profe@domain.com      |
+      | location     | Buenos Aires          |
+    Y tiene asociados los hashtags asociados:
+      | name      |
+      | desarollo |
+      | software  |
+    Y tiene las URL de multimedia asociadas:
+      | url              |
+      | ruta/del/archivo |
+    Cuando lo crea
     Entonces recibo el curso creado correctamente
 
-  @wip
+
   Escenario: Consulta de curso
     Dado que existe un curso
     Cuando lo consulto
     Entonces este curso podrá ser visualizado y realizado por los estudiantes.
 
-  @wip
-  Escenario: Creación fallida
-    Cuando un creador realice un nuevo curso con información faltante y/o erronea.
+  Escenario: Consulta de curso inexistente
+    Cuando consulto un curso que no existe
+    Entonces recibo un mensaje de error
+
+  Esquema del escenario: Creación de curso con información insuficiente
+    Cuando un creador realice un nuevo curso con "<campo>" faltante.
     Entonces el sistema deberá informarle que no es una operación permitida.
+
+    Ejemplos:
+      | campo        |
+      | title        |
+      | exams        |
+      | subscription |
+      | type         |
+      | creator      |
+
+  Escenario: Consulta de tipos de suscripciones
+    Cuando consulto las suscripciones
+    Entonces recibo una lista con los distintos tipos de suscripciones
+
+  Escenario: Consulta de tipos de cursos
+    Cuando consulto los tipos de cursos que ofrece la plataforma
+    Entonces recibo una lista con los distintos tipos de cursos

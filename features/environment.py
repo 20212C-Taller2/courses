@@ -1,7 +1,9 @@
 import os
+
 from behave import fixture, use_fixture
 from fastapi.testclient import TestClient
 
+from app.db.database import BaseModelDb, engine
 from app.main import app
 
 
@@ -28,6 +30,11 @@ def before_feature(context, feature):
 
     use_fixture(app_client, context)
     context.vars = {}  # Rollback de variables entre feature (vars permite compartir variables entre steps)
+
+
+def after_scenario(context, scenario):
+    BaseModelDb.metadata.drop_all(engine)
+    BaseModelDb.metadata.create_all(engine)
 
 
 def after_all(context):
