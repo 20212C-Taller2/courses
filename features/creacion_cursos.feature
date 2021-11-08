@@ -5,17 +5,23 @@ Característica: Creación de curso
   Para que realicen los estudiantes que se inscriban al mismo y poder obtener o no ganancias por esto.
 
   Escenario: Creación Exitosa
-    Cuando un creador realice un nuevo curso con:
+    Dado que un creador realiza un nuevo curso con:
       | key          | value                 |
       | title        | titulo                |
       | description  | Descripción del curso |
       | exams        | 1                     |
       | subscription | free                  |
       | type         | WEB_DEV               |
-#     | creator      | usuario               |
-#     | tags             | Hashtags asociados para facilitar la búsqueda.                               |
-#     | Fotos y/o videos | Material multimedia que acompañe                                             |
-#     | location         | Ubicación geografica del curso                                               |
+      | creator      | profe@domain.com      |
+      | location     | Buenos Aires          |
+    Y tiene asociados los hashtags asociados:
+      | name      |
+      | desarollo |
+      | software  |
+    Y tiene las URL de multimedia asociadas:
+      | url              |
+      | ruta/del/archivo |
+    Cuando lo crea
     Entonces recibo el curso creado correctamente
 
 
@@ -38,6 +44,7 @@ Característica: Creación de curso
       | exams        |
       | subscription |
       | type         |
+      | creator      |
 
   Escenario: Consulta de tipos de suscripciones
     Cuando consulto las suscripciones

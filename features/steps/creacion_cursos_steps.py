@@ -4,7 +4,11 @@ def create_course(replacement: dict):
         "description": "description",
         "exams": 1,
         "subscription": "free",
-        "type": "WEB_DEV"
+        "type": "WEB_DEV",
+        "creator": "profe@domain.com",
+        "location": "Buenos Aires",
+        "tags": [],
+        "media": []
     }
 
     example_course.update(parse_course(replacement))
@@ -26,24 +30,39 @@ def json_headers():
     }
 
 
-@when(u'un creador realice un nuevo curso con')
+@given(u'que un creador realiza un nuevo curso con')
 def step_impl(context):
-    body = {}
+    new_course = {}
     for row in context.table:
-        body[row['key']] = row['value']
+        new_course[row['key']] = row['value']
 
-    context.vars['body'] = create_course(body)
+    context.vars['new_course'] = new_course
+
+
+@given(u'tiene asociados los hashtags asociados')
+def step_impl(context):
+    context.vars['new_course']['tags'] = [tag['name'] for tag in context.table]
+
+
+@given(u'tiene las URL de multimedia asociadas')
+def step_impl(context):
+    context.vars['new_course']['media'] = [media['url'] for media in context.table]
+
+
+@when(u'lo crea')
+def step_impl(context):
+    new_course = create_course(context.vars['new_course'])
 
     context.response = context.client.post(
         "/courses",
         headers=json_headers(),
-        json=body
+        json=new_course
     )
 
 
 @then(u'recibo el curso creado correctamente')
 def step_impl(context):
-    request = context.vars['body']
+    request = context.vars['new_course']
     response_body = context.response.json()
 
     assert context.response.status_code == 201
@@ -111,12 +130,14 @@ def step_impl(context, key):
 def step_impl(context):
     assert context.response.status_code == 422
 
+
 @when(u'consulto las suscripciones')
 def step_impl(context):
     context.response = context.client.get(
         "/courses/subscriptions",
         headers=json_headers()
     )
+
 
 @then(u'recibo una lista con los distintos tipos de suscripciones')
 def step_impl(context):
@@ -125,12 +146,14 @@ def step_impl(context):
     assert context.response.status_code == 200
     assert isinstance(body, list)
 
+
 @when(u'consulto los tipos de cursos que ofrece la plataforma')
 def step_impl(context):
     context.response = context.client.get(
         "/courses/types",
         headers=json_headers()
     )
+
 
 @then(u'recibo una lista con los distintos tipos de cursos')
 def step_impl(context):
