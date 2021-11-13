@@ -11,13 +11,13 @@ Característica: Creación de curso
       | description  | Descripción del curso |
       | exams        | 1                     |
       | subscription | free                  |
-      | type         | WEB_DEV               |
+      | type         | WEB_DEVELOPMENT       |
       | creator      | profe@domain.com      |
       | location     | Buenos Aires          |
     Y tiene asociados los hashtags asociados:
-      | name      |
-      | desarollo |
-      | software  |
+      | name       |
+      | desarrollo |
+      | software   |
     Y tiene las URL de multimedia asociadas:
       | url              |
       | ruta/del/archivo |

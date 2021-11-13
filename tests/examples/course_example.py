@@ -9,7 +9,7 @@ class CourseExample(object):
         self.description = 'description'
         self.exams = 1
         self.subscription = Subscription.FREE
-        self.type = CourseType.WEB_DEV
+        self.type = CourseType.WEB_DEVELOPMENT
         self.creator = 'profe@domain.com'
         self.location = None
         self.tags = set()

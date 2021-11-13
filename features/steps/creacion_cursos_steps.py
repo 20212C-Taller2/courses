@@ -4,7 +4,7 @@ def create_course(replacement: dict):
         "description": "description",
         "exams": 1,
         "subscription": "free",
-        "type": "WEB_DEV",
+        "type": "WEB_DEVELOPMENT",
         "creator": "profe@domain.com",
         "location": "Buenos Aires",
         "tags": [],
@@ -67,7 +67,10 @@ def step_impl(context):
 
     assert context.response.status_code == 201
     for key in request:
-        assert response_body[key] == request[key]
+        if isinstance(request[key], list):
+            assert sorted(request[key]) == sorted(response_body[key])
+        else:
+            assert response_body[key] == request[key]
 
 
 @given(u'que existe un curso')
