@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.adapters.database.courses import model
 from app.domain.courses.model import courses
-from app.domain.courses.model.course_exceptions import CourseNotFoundError
+from app.domain.courses.model.course_exceptions import CourseNotFoundError, CoursesNotFoundError
 from app.domain.courses.model.course_type import CourseType
 
 
@@ -13,7 +13,12 @@ def get_courses(db: Session, type: CourseType, skip: int = 0, limit: int = 100):
     if type:
         query = query.filter(model.Course.type == type)
 
-    return query.offset(skip).limit(limit).all()
+    courses = query.offset(skip).limit(limit).all()
+
+    if len(courses) == 0:
+        raise CoursesNotFoundError()
+
+    return courses
 
 
 def create_course(db: Session, course: courses.CourseCreate):

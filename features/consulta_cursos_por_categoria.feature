@@ -1,5 +1,5 @@
 # language: es
-Característica: Búsqueda de Cursos
+Característica: Búsqueda de Cursos por Categoría
   Como estudiante
   quiero poder realizar búsquedas de cursos por sus atributos
   para visualizar los cursos y así poder obtener más información sobre los mismos.
@@ -12,7 +12,6 @@ Característica: Búsqueda de Cursos
     Cuando se realiza una búsqueda utilizando un filtrado por categoria "WEB_DEVELOPMENT"
     Entonces se retornan los cursos que cumplan dichos filtros.
 
-  @wip
   Escenario: Búsqueda sin resultados
     Cuando se realiza una búsqueda utilizando un filtrado y no existen cursos que cumplan tal condición
     Entonces se deberá notificar al usuario que no existen resultados para su búsqueda.

@@ -32,3 +32,17 @@ def step_impl(context):
 def step_impl(context):
     for course in context.response.json():
         assert course['type'] == 'WEB_DEVELOPMENT'
+
+
+@when(u'se realiza una búsqueda utilizando un filtrado y no existen cursos que cumplan tal condición')
+def step_impl(context):
+    context.response = context.client.get(
+        "/courses?type=WEB_DEVELOPMENT",
+        headers=json_headers()
+    )
+
+
+@then(u'se deberá notificar al usuario que no existen resultados para su búsqueda.')
+def step_impl(context):
+    assert context.response.status_code == 404
+    assert isinstance(context.response.json(), dict)
