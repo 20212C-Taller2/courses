@@ -1,6 +1,7 @@
+from typing import List, Optional
+
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
-from typing import List
 
 from app.adapters.database.courses import sql_course_repository
 from app.dependencies import get_db
@@ -17,8 +18,8 @@ router = APIRouter(
 
 
 @router.get("", response_model=List[courses.Course], status_code=status.HTTP_200_OK)
-def read_courses(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return sql_course_repository.get_courses(db, skip=skip, limit=limit)
+def read_courses(type: Optional[CourseType] = None, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return sql_course_repository.get_courses(db, type, skip=skip, limit=limit)
 
 
 @router.post("", response_model=courses.Course, status_code=status.HTTP_201_CREATED)

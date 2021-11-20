@@ -1,33 +1,6 @@
-def create_course(replacement: dict):
-    example_course = {
-        "title": "title",
-        "description": "description",
-        "exams": 1,
-        "subscription": "free",
-        "type": "WEB_DEVELOPMENT",
-        "creator": "profe@domain.com",
-        "location": "Buenos Aires",
-        "tags": [],
-        "media": []
-    }
+from behave import given, when, then
 
-    example_course.update(parse_course(replacement))
-
-    return example_course
-
-
-def parse_course(course: dict):
-    if "exams" in course:
-        course["exams"] = int(course["exams"])
-
-    return course
-
-
-def json_headers():
-    return {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
+from features.steps.support import create_course, json_headers
 
 
 @given(u'que un creador realiza un nuevo curso con')
