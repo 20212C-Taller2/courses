@@ -43,3 +43,16 @@ def get_course(db: Session, course_id: int):
         raise CourseNotFoundError(course_id)
 
     return course
+
+
+def update_course(db: Session, course_id: int, edited_course: courses.Course):
+    db_course = get_course(db, course_id)
+
+    for var, value in vars(edited_course).items():
+        setattr(db_course, var, value) if value else None
+
+    db.add(db_course)
+    db.commit()
+    db.refresh(db_course)
+
+    return db_course

@@ -41,3 +41,7 @@ def get_course_types():
 @router.get("/{course_id}", response_model=courses.Course, status_code=status.HTTP_200_OK)
 def get_course(course_id: int, db: Session = Depends(get_db)):
     return sql_course_repository.get_course(db, course_id)
+
+@router.put("/{course_id}", response_model=courses.Course, status_code=status.HTTP_200_OK)
+def edit_course(course_id: int, course: courses.CourseCreate, db: Session = Depends(get_db)):
+    return sql_course_repository.update_course(db, course_id, course)
