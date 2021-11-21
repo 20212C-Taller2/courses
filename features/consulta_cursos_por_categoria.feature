@@ -9,9 +9,9 @@ Característica: Búsqueda de Cursos por Categoría
       | type            |
       | WEB_DEVELOPMENT |
       | GRAPHIC_DESIGN  |
-    Cuando se realiza una búsqueda utilizando un filtrado por categoria "WEB_DEVELOPMENT"
-    Entonces se retornan los cursos que cumplan dichos filtros.
+    Cuando se realiza una búsqueda por categoría utilizando un filtrado por categoria "WEB_DEVELOPMENT"
+    Entonces se retornan los cursos que cumplan dichas categorías
 
   Escenario: Búsqueda sin resultados
     Cuando se realiza una búsqueda utilizando un filtrado y no existen cursos que cumplan tal condición
-    Entonces se deberá notificar al usuario que no existen resultados para su búsqueda.
+    Entonces se deberá notificar al usuario que no existen resultados para su búsqueda
