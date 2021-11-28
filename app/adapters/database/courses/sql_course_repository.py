@@ -74,3 +74,14 @@ def delete_enrollment(db, course_id, user_id):
 
     db.delete(enrollment)
     db.commit()
+
+
+def save_collaborator(db, course_id, user_id):
+    db_collaborator = model.Collaborator(id=user_id, course_id=course_id)
+
+    db.add(db_collaborator)
+
+    db.commit()
+    db.refresh(db_collaborator)
+
+    return db_collaborator

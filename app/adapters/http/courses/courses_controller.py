@@ -48,15 +48,19 @@ def edit_course(course_id: int, course: courses.CourseCreate, db: Session = Depe
     return sql_course_repository.update_course(db, course_id, course)
 
 
-@router.post("/{course_id}/students/{user_id}", status_code=status.HTTP_201_CREATED)
-def enroll_to_course(course_id: int, user_id: str, db: Session = Depends(get_db)):
+@router.post("/{course_id}/{role}/{user_id}", status_code=status.HTTP_201_CREATED)
+def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depends(get_db)):
     course = sql_course_repository.get_course(db, course_id)
 
     # TODO: validar existencia de usuario contra API Users
 
-    course.enroll_student(user_id)
+    if role == 'students':
+        course.enroll_student(user_id)
+        return sql_course_repository.save_enrollment(db, course_id, user_id)
+    elif role == 'collaborators':
+        course.register_collaborator(user_id)
+        return sql_course_repository.save_collaborator(db, course_id, user_id)
 
-    return sql_course_repository.save_enrollment(db, course_id, user_id)
 
 @router.delete("/{course_id}/students/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def leave_course(course_id: int, user_id: str, db: Session = Depends(get_db)):

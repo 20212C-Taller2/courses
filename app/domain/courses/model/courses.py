@@ -21,12 +21,16 @@ class CourseBase(BaseModel):
     tags: Set[str] = set()
     media: Set[str] = set()
     students: Set[str] = set()
+    collaborators: Set[str] = set()
 
     class Config:
         orm_mode = True
 
     def enroll_student(self, student):
         self.students.add(student)
+
+    def register_collaborator(self, collaborator):
+        self.collaborators.add(collaborator)
 
 
 class CourseCreate(CourseBase):

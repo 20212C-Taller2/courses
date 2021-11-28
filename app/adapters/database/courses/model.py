@@ -24,6 +24,7 @@ class Course(BaseModelDb):
     tags = Column(ARRAY(String), nullable=False)
     media = Column(ARRAY(String), nullable=False)
     students = relationship("Student", backref="course")
+    collaborators = relationship("Collaborator", cascade="all,delete", backref="course")
 
     def to_entity(self) -> ModelCourse:
         return ModelCourse(
@@ -37,7 +38,8 @@ class Course(BaseModelDb):
             location=self.location,
             tags=self.tags,
             media=self.media,
-            students={student.id for student in self.students}
+            students={student.id for student in self.students},
+            collaborators={student.id for student in self.collaborators}
         )
 
 
@@ -47,6 +49,12 @@ class Student(BaseModelDb):
     id = Column(String, primary_key=True)
     course_id = Column(Integer, ForeignKey('courses.id'), primary_key=True)
 
+
+class Collaborator(BaseModelDb):
+    __tablename__ = "collaborators"
+
+    id = Column(String, primary_key=True)
+    course_id = Column(Integer, ForeignKey('courses.id'), primary_key=True)
 
 # class Tag(BaseModelDb):
 #     __tablename__ = "tags"
