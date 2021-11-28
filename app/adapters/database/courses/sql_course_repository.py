@@ -22,7 +22,7 @@ def get_courses(db: Session, type: CourseType, subscription: Subscription, skip:
     if len(courses) == 0:
         raise CoursesNotFoundError()
 
-    return courses
+    return [course.to_entity() for course in courses]
 
 
 def create_course(db: Session, course: courses.CourseCreate):
@@ -38,15 +38,15 @@ def create_course(db: Session, course: courses.CourseCreate):
 
 
 def get_course(db: Session, course_id: int):
-    course = db.query(model.Course).get(course_id)
-    if not course:
+    db_course = db.query(model.Course).get(course_id)
+    if not db_course:
         raise CourseNotFoundError(course_id)
 
-    return course
+    return db_course.to_entity()
 
 
 def update_course(db: Session, course_id: int, edited_course: courses.Course):
-    db_course = get_course(db, course_id)
+    db_course = db.query(model.Course).get(course_id)
 
     for var, value in vars(edited_course).items():
         setattr(db_course, var, value) if value else None
@@ -55,4 +55,15 @@ def update_course(db: Session, course_id: int, edited_course: courses.Course):
     db.commit()
     db.refresh(db_course)
 
-    return db_course
+    return get_course(db, db_course.id)
+
+
+def save_enrollment(db: Session, course_id: int, user_id: str):
+    db_student = model.Student(id=user_id, course_id=course_id)
+
+    db.add(db_student)
+
+    db.commit()
+    db.refresh(db_student)
+
+    return db_student

@@ -20,9 +20,13 @@ class CourseBase(BaseModel):
     location: Optional[str]
     tags: Set[str] = set()
     media: Set[str] = set()
+    students: Set[str] = set()
 
     class Config:
         orm_mode = True
+
+    def enroll_student(self, student):
+        self.students.add(student)
 
 
 class CourseCreate(CourseBase):

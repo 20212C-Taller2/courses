@@ -20,6 +20,7 @@ class TestCourseUseCases(unittest.TestCase):
         self.assertIsInstance(course.creator, str)
         self.assertIsInstance(course.tags, set)
         self.assertIsInstance(course.media, set)
+        self.assertIsInstance(course.students, set)
 
     def test_course_title_should_not_have_empty_title(self):
         def course_without_title():
@@ -54,3 +55,11 @@ class TestCourseUseCases(unittest.TestCase):
         course = CourseExample().with_media(paths).build()
 
         self.assertSetEqual(course.media, paths)
+
+    def test_course_should_allow_students_to_enroll(self):
+        student = 'alumno@domain.com'
+        course = CourseExample().build()
+
+        course.enroll_student(student)
+
+        self.assertSetEqual(course.students, {student})

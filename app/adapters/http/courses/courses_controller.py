@@ -42,6 +42,18 @@ def get_course_types():
 def get_course(course_id: int, db: Session = Depends(get_db)):
     return sql_course_repository.get_course(db, course_id)
 
+
 @router.put("/{course_id}", response_model=courses.Course, status_code=status.HTTP_200_OK)
 def edit_course(course_id: int, course: courses.CourseCreate, db: Session = Depends(get_db)):
     return sql_course_repository.update_course(db, course_id, course)
+
+
+@router.post("/{course_id}/students/{user_id}", status_code=status.HTTP_201_CREATED)
+def enroll_to_course(course_id: int, user_id: str, db: Session = Depends(get_db)):
+    course = sql_course_repository.get_course(db, course_id)
+
+    # TODO: validar existencia de usuario contra API Users
+
+    course.enroll_student(user_id)
+
+    return sql_course_repository.save_enrollment(db, course_id, user_id)

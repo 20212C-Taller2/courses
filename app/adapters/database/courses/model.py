@@ -5,7 +5,9 @@ Modelos para el ORM de la base de datos
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import ARRAY
+
 from app.db.database import BaseModelDb
+from app.domain.courses.model.courses import Course as ModelCourse
 
 
 class Course(BaseModelDb):
@@ -21,6 +23,29 @@ class Course(BaseModelDb):
     location = Column(String, nullable=True)
     tags = Column(ARRAY(String), nullable=False)
     media = Column(ARRAY(String), nullable=False)
+    students = relationship("Student", backref="course")
+
+    def to_entity(self) -> ModelCourse:
+        return ModelCourse(
+            id=self.id,
+            title=self.title,
+            description=self.description,
+            exams=self.exams,
+            subscription=self.subscription,
+            type=self.type,
+            creator=self.creator,
+            location=self.location,
+            tags=self.tags,
+            media=self.media,
+            students={student.id for student in self.students}
+        )
+
+
+class Student(BaseModelDb):
+    __tablename__ = "students"
+
+    id = Column(String, primary_key=True)
+    course_id = Column(Integer, ForeignKey('courses.id'), primary_key=True)
 
 
 # class Tag(BaseModelDb):
