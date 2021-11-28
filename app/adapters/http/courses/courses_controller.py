@@ -57,3 +57,7 @@ def enroll_to_course(course_id: int, user_id: str, db: Session = Depends(get_db)
     course.enroll_student(user_id)
 
     return sql_course_repository.save_enrollment(db, course_id, user_id)
+
+@router.delete("/{course_id}/students/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def leave_course(course_id: int, user_id: str, db: Session = Depends(get_db)):
+    sql_course_repository.delete_enrollment(db, course_id, user_id)

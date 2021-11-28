@@ -67,3 +67,10 @@ def save_enrollment(db: Session, course_id: int, user_id: str):
     db.refresh(db_student)
 
     return db_student
+
+
+def delete_enrollment(db, course_id, user_id):
+    enrollment = db.query(model.Student).get((user_id, course_id))
+
+    db.delete(enrollment)
+    db.commit()
