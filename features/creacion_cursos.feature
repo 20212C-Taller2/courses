@@ -36,7 +36,7 @@ Característica: Creación de curso
 
   Esquema del escenario: Creación de curso con información insuficiente
     Cuando un creador realice un nuevo curso con "<campo>" faltante.
-    Entonces el sistema deberá informarle que no es una operación permitida.
+    Entonces el sistema deberá informarle que no es una operación permitida
 
     Ejemplos:
       | campo        |
@@ -45,10 +45,6 @@ Característica: Creación de curso
       | subscription |
       | type         |
       | creator      |
-
-  Escenario: Consulta de tipos de suscripciones
-    Cuando consulto las suscripciones
-    Entonces recibo una lista con los distintos tipos de suscripciones
 
   Escenario: Consulta de tipos de cursos
     Cuando consulto los tipos de cursos que ofrece la plataforma

@@ -4,7 +4,6 @@ from pydantic import ValidationError
 
 from app.domain.courses.model.course_type import CourseType
 from app.domain.courses.model.courses import CourseCreate
-from app.domain.courses.model.subscription import Subscription
 from tests.examples.course_example import CourseExample
 
 
@@ -15,7 +14,7 @@ class TestCourseUseCases(unittest.TestCase):
         self.assertIsInstance(course.title, str)
         self.assertIsInstance(course.description, str)
         self.assertIsInstance(course.exams, int)
-        self.assertIsInstance(course.subscription, Subscription)
+        self.assertIsInstance(course.subscription, str)
         self.assertIsInstance(course.type, CourseType)
         self.assertIsInstance(course.creator, str)
         self.assertIsInstance(course.tags, set)

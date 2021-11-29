@@ -7,14 +7,13 @@ from typing import Optional, Set
 from pydantic import BaseModel, PositiveInt, constr
 
 from app.domain.courses.model.course_type import CourseType
-from app.domain.courses.model.subscription import Subscription
 
 
 class CourseBase(BaseModel):
     title: constr(min_length=1)
     description: Optional[str] = None
     exams: PositiveInt
-    subscription: Subscription
+    subscription: str
     type: CourseType
     creator: constr(min_length=1)
     location: Optional[str]

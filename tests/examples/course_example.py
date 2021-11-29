@@ -1,6 +1,5 @@
-from app.domain.courses.model.courses import CourseCreate
-from app.domain.courses.model.subscription import Subscription
 from app.domain.courses.model.course_type import CourseType
+from app.domain.courses.model.courses import CourseCreate
 
 
 class CourseExample(object):
@@ -8,7 +7,7 @@ class CourseExample(object):
         self.title = 'title'
         self.description = 'description'
         self.exams = 1
-        self.subscription = Subscription.FREE
+        self.subscription = 'FREE'
         self.type = CourseType.WEB_DEVELOPMENT
         self.creator = 'profe@domain.com'
         self.location = None

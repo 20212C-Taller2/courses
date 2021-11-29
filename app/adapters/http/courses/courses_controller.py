@@ -4,7 +4,8 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from app.adapters.database.courses import sql_course_repository
-from app.dependencies import get_db
+from app.adapters.http.subscriptions.SubscriptionsService import SubscriptionsService
+from app.dependencies import get_db, get_subscriptions_service
 from app.domain.courses.model import courses
 from app.domain.courses.model.course_type import CourseType
 from app.domain.courses.model.subscription import Subscription
@@ -24,13 +25,11 @@ def read_courses(type: Optional[CourseType] = None, subscription: Optional[Subsc
 
 
 @router.post("", response_model=courses.Course, status_code=status.HTTP_201_CREATED)
-def create_course(course: courses.CourseCreate, db: Session = Depends(get_db)):
+def create_course(course: courses.CourseCreate, db: Session = Depends(get_db),
+                  subscriptions_service: SubscriptionsService = Depends(get_subscriptions_service)):
+    Subscription.exists(subscriptions_service, course.subscription)
+
     return sql_course_repository.create_course(db=db, course=course)
-
-
-@router.get("/subscriptions", response_model=List[str], status_code=status.HTTP_200_OK)
-def get_subscriptions():
-    return [s.value for s in Subscription]
 
 
 @router.get("/types", response_model=List[str], status_code=status.HTTP_200_OK)
@@ -44,7 +43,11 @@ def get_course(course_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{course_id}", response_model=courses.Course, status_code=status.HTTP_200_OK)
-def edit_course(course_id: int, course: courses.CourseCreate, db: Session = Depends(get_db)):
+def edit_course(course_id: int, course: courses.CourseCreate,
+                db: Session = Depends(get_db),
+                subscriptions_service: SubscriptionsService = Depends(get_subscriptions_service)):
+    Subscription.exists(subscriptions_service, course.subscription)
+
     return sql_course_repository.update_course(db, course_id, course)
 
 
@@ -63,5 +66,5 @@ def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depe
 
 
 @router.delete("/{course_id}/students/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-def leave_course(course_id: int, user_id: str, db: Session = Depends(get_db)):
+def leave_course(course_id: int, user_id: str, db: Session = Depends(get_db)) -> None:
     sql_course_repository.delete_enrollment(db, course_id, user_id)

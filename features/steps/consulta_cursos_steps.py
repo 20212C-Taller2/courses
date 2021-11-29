@@ -1,6 +1,6 @@
 from behave import given, when, then, use_step_matcher
 
-from features.steps.support import create_course, json_headers
+from features.steps.support import create_course, json_headers, post_course
 
 use_step_matcher("re")
 
@@ -9,11 +9,7 @@ use_step_matcher("re")
 def step_impl(context):
     for row in context.table:
         new_course = create_course({'type': row['type']})
-        response = context.client.post(
-            "/courses",
-            headers=json_headers(),
-            json=new_course
-        )
+        response = post_course(context, new_course)
         assert response.status_code == 201
 
 
@@ -40,14 +36,10 @@ def step_impl(context):
     context.vars['total_courses'] = 0
     for row in context.table:
         new_course = create_course({'subscription': row['subscription']})
-        response = context.client.post(
-            "/courses",
-            headers=json_headers(),
-            json=new_course
-        )
+        response = post_course(context, new_course)
+
         assert response.status_code == 201
         context.vars['total_courses'] += 1
-        print("Creados {} cursos".format(context.vars['total_courses']))
 
 
 @when(u'se realiza una búsqueda utilizando como filtro el tipo de suscripción de un curso "free"')

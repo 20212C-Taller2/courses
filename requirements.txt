@@ -7,3 +7,4 @@ psycopg2~=2.9.1
 sqlalchemy~=1.4.23
 uvicorn[standard]~=0.15.0
 requests
+requests_mock

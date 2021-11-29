@@ -1,6 +1,6 @@
 from behave import given, when, then
 
-from features.steps.support import create_course, json_headers
+from features.steps.support import create_course, json_headers, post_course
 
 
 @given(u'que un creador realiza un nuevo curso con')
@@ -26,11 +26,7 @@ def step_impl(context):
 def step_impl(context):
     new_course = create_course(context.vars['new_course'])
 
-    context.response = context.client.post(
-        "/courses",
-        headers=json_headers(),
-        json=new_course
-    )
+    context.response = post_course(context, new_course)
 
 
 @then(u'recibo el curso creado correctamente')
@@ -48,11 +44,7 @@ def step_impl(context):
 
 @given(u'que existe un curso')
 def step_impl(context):
-    context.response = context.client.post(
-        "/courses",
-        headers=json_headers(),
-        json=create_course({})
-    )
+    context.response = post_course(context, create_course({}))
 
     response = context.response.json()
     context.vars['created'] = response
@@ -95,32 +87,12 @@ def step_impl(context, key):
     course = create_course({})
     del course[key]
 
-    context.response = context.client.post(
-        "/courses",
-        headers=json_headers(),
-        json=course
-    )
+    context.response = post_course(context, course)
 
 
-@then(u'el sistema deberá informarle que no es una operación permitida.')
+@then(u'el sistema deberá informarle que no es una operación permitida')
 def step_impl(context):
     assert context.response.status_code == 422
-
-
-@when(u'consulto las suscripciones')
-def step_impl(context):
-    context.response = context.client.get(
-        "/courses/subscriptions",
-        headers=json_headers()
-    )
-
-
-@then(u'recibo una lista con los distintos tipos de suscripciones')
-def step_impl(context):
-    body = context.response.json()
-
-    assert context.response.status_code == 200
-    assert isinstance(body, list)
 
 
 @when(u'consulto los tipos de cursos que ofrece la plataforma')
