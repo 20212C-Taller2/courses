@@ -2,6 +2,7 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
+from starlette.responses import Response
 
 from app.adapters.database.courses import sql_course_repository
 from app.adapters.http.subscriptions.SubscriptionsService import SubscriptionsService
@@ -66,5 +67,7 @@ def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depe
 
 
 @router.delete("/{course_id}/students/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-def leave_course(course_id: int, user_id: str, db: Session = Depends(get_db)) -> None:
+def leave_course(course_id: int, user_id: str, db: Session = Depends(get_db)):
     sql_course_repository.delete_enrollment(db, course_id, user_id)
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
