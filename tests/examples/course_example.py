@@ -1,9 +1,10 @@
 from app.domain.courses.model.course_type import CourseType
-from app.domain.courses.model.courses import CourseCreate
+from app.domain.courses.model.courses import Course
 
 
 class CourseExample(object):
     def __init__(self):
+        self.id = 1
         self.title = 'title'
         self.description = 'description'
         self.exams = 1
@@ -15,9 +16,9 @@ class CourseExample(object):
         self.media = set()
 
     def build(self):
-        return CourseCreate(title=self.title, description=self.description, exams=self.exams,
-                            subscription=self.subscription, type=self.type, creator=self.creator,
-                            location=self.location, tags=self.tags, media=self.media)
+        return Course(id=self.id, title=self.title, description=self.description, exams=self.exams,
+                      subscription=self.subscription, type=self.type, creator=self.creator,
+                      location=self.location, tags=self.tags, media=self.media)
 
     def with_title(self, value):
         self.title = value

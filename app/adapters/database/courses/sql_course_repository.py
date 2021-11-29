@@ -5,10 +5,9 @@ from app.adapters.database.courses import model
 from app.domain.courses.model import courses
 from app.domain.courses.model.course_exceptions import CourseNotFoundError, CoursesNotFoundError
 from app.domain.courses.model.course_type import CourseType
-from app.domain.courses.model.subscription import Subscription
 
 
-def get_courses(db: Session, type: CourseType, subscription: Subscription, skip: int = 0, limit: int = 100):
+def get_courses(db: Session, type: CourseType, subscription: str, skip: int = 0, limit: int = 100):
     query = db.query(model.Course)
 
     if type:

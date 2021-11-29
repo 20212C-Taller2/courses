@@ -11,6 +11,7 @@ class TestCourseUseCases(unittest.TestCase):
     def test_course_attributes(self):
         course = CourseExample().build()
 
+        self.assertIsInstance(course.id, int)
         self.assertIsInstance(course.title, str)
         self.assertIsInstance(course.description, str)
         self.assertIsInstance(course.exams, int)

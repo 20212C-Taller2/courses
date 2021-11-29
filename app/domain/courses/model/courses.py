@@ -19,6 +19,17 @@ class CourseBase(BaseModel):
     location: Optional[str]
     tags: Set[str] = set()
     media: Set[str] = set()
+
+    class Config:
+        orm_mode = True
+
+
+class CourseCreate(CourseBase):
+    pass
+
+
+class Course(CourseBase):
+    id: int
     students: Set[str] = set()
     collaborators: Set[str] = set()
 
@@ -30,14 +41,3 @@ class CourseBase(BaseModel):
 
     def register_collaborator(self, collaborator):
         self.collaborators.add(collaborator)
-
-
-class CourseCreate(CourseBase):
-    pass
-
-
-class Course(CourseBase):
-    id: int
-
-    class Config:
-        orm_mode = True

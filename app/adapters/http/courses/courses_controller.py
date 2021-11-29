@@ -19,7 +19,7 @@ router = APIRouter(
 
 
 @router.get("", response_model=List[courses.Course], status_code=status.HTTP_200_OK)
-def read_courses(type: Optional[CourseType] = None, subscription: Optional[Subscription] = None,
+def read_courses(type: Optional[CourseType] = None, subscription: Optional[str] = None,
                  skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return sql_course_repository.get_courses(db, type, subscription, skip=skip, limit=limit)
 
