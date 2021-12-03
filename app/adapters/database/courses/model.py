@@ -8,6 +8,8 @@ from sqlalchemy.types import ARRAY
 
 from app.db.database import BaseModelDb
 from app.domain.courses.model.courses import Course as ModelCourse
+from app.domain.courses.model.exams import Exam
+from app.domain.courses.model.questions import Question
 
 
 class Course(BaseModelDb):
@@ -16,7 +18,6 @@ class Course(BaseModelDb):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True, nullable=False)
     description = Column(String, index=True, nullable=False)
-    exams = Column(Integer, nullable=False)
     subscription = Column(String, nullable=False)
     type = Column(String, nullable=False)
     creator = Column(String, nullable=False)
@@ -25,13 +26,13 @@ class Course(BaseModelDb):
     media = Column(ARRAY(String), nullable=False)
     students = relationship("Student", backref="course")
     collaborators = relationship("Collaborator", cascade="all,delete", backref="course")
+    exams = relationship("Exam", backref="course", lazy="joined")
 
     def to_entity(self) -> ModelCourse:
         return ModelCourse(
             id=self.id,
             title=self.title,
             description=self.description,
-            exams=self.exams,
             subscription=self.subscription,
             type=self.type,
             creator=self.creator,
@@ -39,7 +40,10 @@ class Course(BaseModelDb):
             tags=self.tags,
             media=self.media,
             students={student.id for student in self.students},
-            collaborators={student.id for student in self.collaborators}
+            collaborators={student.id for student in self.collaborators},
+            exams=[Exam(title=exam.title,
+                        questions=[Question(number=question.number, text=question.text) for question in exam.questions])
+                   for exam in self.exams]
         )
 
 

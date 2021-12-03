@@ -5,6 +5,7 @@ campos
 from typing import Optional, Set
 
 from pydantic import BaseModel, PositiveInt, constr
+from pydantic.class_validators import List
 
 from app.domain.courses.model.course_type import CourseType
 
@@ -12,7 +13,6 @@ from app.domain.courses.model.course_type import CourseType
 class CourseBase(BaseModel):
     title: constr(min_length=1)
     description: Optional[str] = None
-    exams: PositiveInt
     subscription: str
     type: CourseType
     creator: constr(min_length=1)
@@ -32,6 +32,7 @@ class Course(CourseBase):
     id: int
     students: Set[str] = set()
     collaborators: Set[str] = set()
+    exams: List = []
 
     class Config:
         orm_mode = True

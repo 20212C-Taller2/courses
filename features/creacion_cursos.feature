@@ -9,7 +9,6 @@ Característica: Creación de curso
       | key          | value                 |
       | title        | titulo                |
       | description  | Descripción del curso |
-      | exams        | 1                     |
       | subscription | free                  |
       | type         | WEB_DEVELOPMENT       |
       | creator      | profe@domain.com      |
@@ -41,7 +40,6 @@ Característica: Creación de curso
     Ejemplos:
       | campo        |
       | title        |
-      | exams        |
       | subscription |
       | type         |
       | creator      |

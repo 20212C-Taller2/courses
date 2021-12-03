@@ -13,7 +13,7 @@ from app.domain.courses.model.subscription import Subscription
 
 router = APIRouter(
     prefix="/courses",
-    tags=["courses"],
+    tags=["Courses"],
     dependencies=[],
     responses={404: {"description": "Not found"}},
 )

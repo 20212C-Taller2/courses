@@ -5,6 +5,7 @@ from app.adapters.database.courses import model
 from app.domain.courses.model import courses
 from app.domain.courses.model.course_exceptions import CourseNotFoundError, CoursesNotFoundError
 from app.domain.courses.model.course_type import CourseType
+from app.domain.courses.model.courses import Course
 
 
 def get_courses(db: Session, type: CourseType, subscription: str, skip: int = 0, limit: int = 100):
@@ -36,7 +37,7 @@ def create_course(db: Session, course: courses.CourseCreate):
     return db_course
 
 
-def get_course(db: Session, course_id: int):
+def get_course(db: Session, course_id: int) -> Course:
     db_course = db.query(model.Course).get(course_id)
     if not db_course:
         raise CourseNotFoundError(course_id)

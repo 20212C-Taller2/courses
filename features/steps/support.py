@@ -5,7 +5,6 @@ def create_course(replacement: dict):
     example_course = {
         "title": "title",
         "description": "description",
-        "exams": 1,
         "subscription": "free",
         "type": "WEB_DEVELOPMENT",
         "creator": "profe@domain.com",
@@ -20,9 +19,6 @@ def create_course(replacement: dict):
 
 
 def parse_course(course: dict):
-    if "exams" in course:
-        course["exams"] = int(course["exams"])
-
     return course
 
 

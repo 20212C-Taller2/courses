@@ -14,7 +14,6 @@ class TestCourseUseCases(unittest.TestCase):
         self.assertIsInstance(course.id, int)
         self.assertIsInstance(course.title, str)
         self.assertIsInstance(course.description, str)
-        self.assertIsInstance(course.exams, int)
         self.assertIsInstance(course.subscription, str)
         self.assertIsInstance(course.type, CourseType)
         self.assertIsInstance(course.creator, str)

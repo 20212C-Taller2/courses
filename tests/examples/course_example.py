@@ -7,7 +7,6 @@ class CourseExample(object):
         self.id = 1
         self.title = 'title'
         self.description = 'description'
-        self.exams = 1
         self.subscription = 'FREE'
         self.type = CourseType.WEB_DEVELOPMENT
         self.creator = 'profe@domain.com'
@@ -16,7 +15,7 @@ class CourseExample(object):
         self.media = set()
 
     def build(self):
-        return Course(id=self.id, title=self.title, description=self.description, exams=self.exams,
+        return Course(id=self.id, title=self.title, description=self.description,
                       subscription=self.subscription, type=self.type, creator=self.creator,
                       location=self.location, tags=self.tags, media=self.media)
 
@@ -26,10 +25,6 @@ class CourseExample(object):
 
     def with_description(self, value):
         self.description = value
-        return self
-
-    def with_exams(self, value):
-        self.exams = value
         return self
 
     def with_subscription(self, value):
