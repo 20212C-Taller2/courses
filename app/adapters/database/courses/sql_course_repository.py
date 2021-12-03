@@ -9,7 +9,7 @@ from app.domain.courses.model.courses import Course
 
 
 def get_courses(db: Session, type: CourseType, subscription: str, skip: int = 0, limit: int = 100):
-    query = db.query(model.Course)
+    query = db.query(model.Course).order_by(model.Course.id)
 
     if type:
         query = query.filter(model.Course.type == type)
