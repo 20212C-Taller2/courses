@@ -10,13 +10,13 @@ Característica: Consulta de Cursos por Rol
     Cuando consulto los cursos del "creator" "creador@example.com"
     Entonces obtengo los cursos que le pertenecen al "creator"
 
-  @wip
-  Esquema del escenario: Consulta de Cursos para Estudiante
+  Esquema del escenario: Consulta de Cursos dado el Rol
     Dado que existe un curso
     Y que está inscripto el "<rol>" "<userId>"
-    Cuando consulto los cursos a los que está inscripto el "estudiante"
+    Cuando consulto los cursos a los que está inscripto el "<rol>" "<userId>"
+    Entonces obtengo los cursos a los cuales está inscripto el "<rol>" "<userId>"
 
     Ejemplos:
-      | rol          | userId                  |
-      | student      | estudiante@example.com  |
-      | collaborator | colaborador@example.com |
+      | rol           | userId                  |
+      | students      | estudiante@example.com  |
+      | collaborators | colaborador@example.com |

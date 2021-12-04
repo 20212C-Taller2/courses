@@ -1,5 +1,7 @@
-from behave import when, then
 from urllib.parse import urlencode
+
+from behave import given, when, then
+
 from features.steps.support import json_headers
 
 
@@ -22,3 +24,32 @@ def step_impl(context, creator_key):
     assert context.response.status_code == 200
     for course in courses:
         assert course[creator_key] == creator
+
+
+@given(u'que está inscripto el "{}" "{}"')
+def step_impl(context, role, user_id):
+    course_id = context.response.json()['id']
+    context.vars['userId'] = user_id
+    context.response = context.client.post(
+        "/courses/{}/{}/{}".format(course_id, role, user_id),
+        headers=json_headers()
+    )
+
+    assert context.response.status_code == 201
+
+
+@when(u'consulto los cursos a los que está inscripto el "{}" "{}"')
+def step_impl(context, role, user_id):
+    context.response = context.client.get(
+        "/courses/{}/{}".format(role, user_id),
+        headers=json_headers()
+    )
+
+
+@then(u'obtengo los cursos a los cuales está inscripto el "{}" "{}"')
+def step_impl(context, role, user_id):
+    courses = context.response.json()
+
+    assert context.response.status_code == 200
+    for course in courses:
+        assert user_id in course[role]

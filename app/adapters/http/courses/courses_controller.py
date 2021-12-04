@@ -67,6 +67,14 @@ def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depe
         return sql_course_repository.save_collaborator(db, course_id, user_id)
 
 
+@router.get("/{role}/{user_id}", response_model=List[courses.Course], status_code=status.HTTP_200_OK)
+def get_courses_for_user_by_role(role: str, user_id: str, db: Session = Depends(get_db)):
+    if role == 'students':
+        return sql_course_repository.get_courses_for_student(db, role, user_id)
+    elif role == 'collaborators':
+        return sql_course_repository.get_courses_for_collaborator(db, user_id)
+
+
 @router.delete("/{course_id}/students/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def leave_course(course_id: int, user_id: str, db: Session = Depends(get_db)):
     sql_course_repository.delete_enrollment(db, course_id, user_id)
