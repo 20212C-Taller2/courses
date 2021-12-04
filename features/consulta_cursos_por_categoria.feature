@@ -4,7 +4,7 @@ Característica: Búsqueda de Cursos por Categoría
   quiero poder realizar búsquedas de cursos por sus atributos
   para visualizar los cursos y así poder obtener más información sobre los mismos.
 
-  Escenario: Búsqueda de curso por categorias
+  Escenario: Búsqueda de curso por categorías
     Dado que existen cursos con tipo:
       | type            |
       | WEB_DEVELOPMENT |

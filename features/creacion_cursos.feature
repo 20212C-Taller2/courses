@@ -11,7 +11,7 @@ Característica: Creación de curso
       | description  | Descripción del curso |
       | subscription | free                  |
       | type         | WEB_DEVELOPMENT       |
-      | creator      | profe@domain.com      |
+      | creator      | profesor@example.com  |
       | location     | Buenos Aires          |
     Y tiene asociados los hashtags asociados:
       | name       |

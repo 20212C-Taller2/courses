@@ -8,7 +8,7 @@ Característica: Inscripción a Curso
     Dado que existe un curso
 
   Escenario: Inscripción exitosa
-    Cuando el usuario "alumno@dominio.com" solicita la inscripción a un curso
+    Cuando el usuario "alumno@example.com" solicita la inscripción a un curso
     Entonces se deberá ejecutar el flujo correspondiente para establecer dicha inscripción.
 
   @wip

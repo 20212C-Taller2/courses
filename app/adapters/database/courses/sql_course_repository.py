@@ -8,7 +8,7 @@ from app.domain.courses.model.course_type import CourseType
 from app.domain.courses.model.courses import Course
 
 
-def get_courses(db: Session, type: CourseType, subscription: str, skip: int = 0, limit: int = 100):
+def get_courses(db: Session, type: CourseType, subscription: str, creator: str, skip: int = 0, limit: int = 100):
     query = db.query(model.Course).order_by(model.Course.id)
 
     if type:
@@ -16,6 +16,9 @@ def get_courses(db: Session, type: CourseType, subscription: str, skip: int = 0,
 
     if subscription:
         query = query.filter(model.Course.subscription == subscription)
+
+    if creator:
+        query = query.filter(model.Course.creator == creator)
 
     courses = query.offset(skip).limit(limit).all()
 

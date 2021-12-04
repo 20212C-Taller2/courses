@@ -57,7 +57,7 @@ class TestCourseUseCases(unittest.TestCase):
         self.assertSetEqual(course.media, paths)
 
     def test_course_should_allow_students_to_enroll(self):
-        student = 'alumno@domain.com'
+        student = 'alumno@example.com'
         course = CourseExample().build()
 
         course.enroll_student(student)

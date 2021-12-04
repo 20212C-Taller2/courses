@@ -7,7 +7,7 @@ def create_course(replacement: dict):
         "description": "description",
         "subscription": "free",
         "type": "WEB_DEVELOPMENT",
-        "creator": "profe@domain.com",
+        "creator": "creator@example.com",
         "location": "Buenos Aires",
         "tags": [],
         "media": []
