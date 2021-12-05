@@ -1,6 +1,9 @@
+from typing import List
+
 from sqlalchemy.orm import Session
 
 from app.adapters.database.courses import model, exam
+from app.domain.courses.model.exam_exceptions import ExamsNotFoundError
 from app.domain.courses.model.exams import Exam as ExamModel
 
 
@@ -21,3 +24,15 @@ def create_exam(db: Session, course_id: int, exam_model: ExamModel):
     db.refresh(db_exam)
 
     return db_exam
+
+
+def get_course_exams(db: Session, course_id: int) -> List[ExamModel]:
+    db_course_exams = db.query(exam.Exam) \
+        .filter(exam.Exam.course_id == course_id) \
+        .order_by(exam.Exam.id) \
+        .all()
+
+    if len(db_course_exams) == 0:
+        raise ExamsNotFoundError(course_id)
+
+    return [db_course_exam.to_entity() for db_course_exam in db_course_exams]

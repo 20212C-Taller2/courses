@@ -5,7 +5,7 @@ Característica: Creación de Examen
   Para evaluar a los estudiantes de un curso
 
   Antecedentes:
-    Dado que existe un curso con "exams" "1"
+    Dado que existe un curso
 
   Escenario: Creación de examen exitosa
     Cuando un creador inicia la creación de un examen con titulo "Examen final"
@@ -16,10 +16,14 @@ Característica: Creación de Examen
     Y publica el examen
     Entonces se creará un nuevo examen
 
-  @wip
-  Escenario: Publicación de examen
-    Cuando un creador quiera publicar un examen previamente creado.
-    Entonces el examen estara disponible para que los estudiantes lo rindan.
+  Escenario: Consulta de exámenes por curso
+    Y que existe un examen
+    Cuando se consulta por los exámenes del curso
+    Entonces obtengo el detalle de los exámenes del curso
+
+  Escenario: Consulta de exámenes de un curso con ninguno
+    Cuando se consulta por los exámenes del curso
+    Entonces recibo un mensaje de error
 
   @wip
   Escenario: Creación de examen fallida

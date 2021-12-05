@@ -8,8 +8,6 @@ from sqlalchemy.types import ARRAY
 
 from app.db.database import BaseModelDb
 from app.domain.courses.model.courses import Course as ModelCourse
-from app.domain.courses.model.exams import Exam
-from app.domain.courses.model.questions import Question
 
 
 class Course(BaseModelDb):
@@ -41,9 +39,7 @@ class Course(BaseModelDb):
             media=self.media,
             students={student.id for student in self.students},
             collaborators={student.id for student in self.collaborators},
-            exams=[Exam(title=exam.title,
-                        questions=[Question(number=question.number, text=question.text) for question in exam.questions])
-                   for exam in self.exams]
+            exams=[exam.to_entity() for exam in self.exams]
         )
 
 

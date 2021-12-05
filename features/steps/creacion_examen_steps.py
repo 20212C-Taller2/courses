@@ -39,3 +39,49 @@ def step_impl(context):
     for expected_question, actual_question in zip(expected_exam['questions'], actual_exam['questions']):
         assert expected_question['number'] == actual_question['number']
         assert expected_question['text'] == actual_question['text']
+
+
+@then(u'que existe un examen')
+def step_impl(context):
+    context.vars['course_id'] = context.response.json()['id']
+
+    context.vars['exam'] = {
+        "title": "dummy exam",
+        "questions": [
+            {
+                "number": 1,
+                "text": "dummy question"
+            }
+        ]
+    }
+
+    context.response = context.client.post(
+        "/courses/{}/exams".format(context.vars['course_id']),
+        json=context.vars['exam'],
+        headers=json_headers()
+    )
+
+    assert context.response.status_code == 201
+
+
+@when(u'se consulta por los exámenes del curso')
+def step_impl(context):
+    context.response = context.client.get(
+        "/courses/{}/exams".format(context.vars['created']['id']),
+        headers=json_headers()
+    )
+
+
+@then(u'obtengo el detalle de los exámenes del curso')
+def step_impl(context):
+    expected_exam = context.vars['exam']
+    current_exam = context.response.json()
+
+    assert context.response.status_code == 200
+    assert len(current_exam) == 1
+
+    current_exam = current_exam[0]
+    assert expected_exam['title'] == current_exam['title']
+    for expected_question, current_question in zip(expected_exam['questions'], current_exam['questions']):
+        assert expected_question['number'] == current_question['number']
+        assert expected_question['text'] == current_question['text']

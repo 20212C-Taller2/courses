@@ -23,7 +23,6 @@ Característica: Creación de curso
     Cuando lo crea
     Entonces recibo el curso creado correctamente
 
-
   Escenario: Consulta de curso
     Dado que existe un curso
     Cuando lo consulto
