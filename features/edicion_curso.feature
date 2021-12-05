@@ -13,7 +13,6 @@ Característica: Edición de curso
       | nombre_campo | valor           | nuevo_valor       |
       | title        | titulo          | nuevo titulo      |
       | description  | descripcion     | nueva descripcion |
-      | subscription | free            | free              |
       | type         | WEB_DEVELOPMENT | GRAPHIC_DESIGN    |
 
   Esquema del escenario: Edición de datos fallida
@@ -23,5 +22,4 @@ Característica: Edición de curso
 
     Ejemplos:
       | nombre_campo | valor_invalido |
-      | subscription | invalid        |
       | type         | invalid        |

@@ -51,7 +51,7 @@ def get_course(db: Session, course_id: int) -> Course:
     return db_course.to_entity()
 
 
-def update_course(db: Session, course_id: int, edited_course: courses.Course):
+def update_course(db: Session, course_id: int, edited_course: courses.CourseBase):
     db_course = db.query(model.Course).get(course_id)
 
     for var, value in vars(edited_course).items():

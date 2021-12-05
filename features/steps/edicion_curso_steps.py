@@ -25,7 +25,7 @@ def step_impl(context, key, new_value):
             headers=json_headers()
         )
 
-        context.response = context.client.put(
+        context.response = context.client.patch(
             "/courses/{}".format(course['id']),
             headers=json_headers(),
             json=create_course(course)

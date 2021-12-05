@@ -44,12 +44,8 @@ def get_course(course_id: int, db: Session = Depends(get_db)):
     return sql_course_repository.get_course(db, course_id)
 
 
-@router.put("/{course_id}", response_model=courses.Course, status_code=status.HTTP_200_OK)
-def edit_course(course_id: int, course: courses.CourseCreate,
-                db: Session = Depends(get_db),
-                subscriptions_service: SubscriptionsService = Depends(get_subscriptions_service)):
-    Subscription.exists(subscriptions_service, course.subscription)
-
+@router.patch("/{course_id}", response_model=courses.Course, status_code=status.HTTP_200_OK)
+def edit_course(course_id: int, course: courses.CourseBase, db: Session = Depends(get_db)):
     return sql_course_repository.update_course(db, course_id, course)
 
 
@@ -68,7 +64,8 @@ def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depe
 
 
 @router.get("/{role}/{user_id}", response_model=List[courses.Course], status_code=status.HTTP_200_OK)
-def get_courses_for_user_by_role(role: str, user_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_courses_for_user_by_role(role: str, user_id: str, skip: int = 0, limit: int = 100,
+                                 db: Session = Depends(get_db)):
     if role == 'students':
         return sql_course_repository.get_courses_for_student(db, role, user_id, skip, limit)
     elif role == 'collaborators':
