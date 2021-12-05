@@ -38,6 +38,11 @@ def step_impl(context, role, user_id):
     assert context.response.status_code == 201
 
 
+@given(u'el "{}" no se encuentra inscripto como "{}"')
+def step_impl(context, _user_id, _role):
+    pass
+
+
 @when(u'consulto los cursos a los que está inscripto el "{}" "{}"')
 def step_impl(context, role, user_id):
     context.response = context.client.get(

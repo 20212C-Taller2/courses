@@ -10,11 +10,22 @@ Característica: Consulta de Cursos por Rol
     Cuando consulto los cursos del "creator" "creador@example.com"
     Entonces obtengo los cursos que le pertenecen al "creator"
 
-  Esquema del escenario: Consulta de Cursos dado el Rol
+  Esquema del escenario: Consulta de Cursos por Rol
     Dado que existe un curso
     Y que está inscripto el "<rol>" "<userId>"
     Cuando consulto los cursos a los que está inscripto el "<rol>" "<userId>"
     Entonces obtengo los cursos a los cuales está inscripto el "<rol>" "<userId>"
+
+    Ejemplos:
+      | rol           | userId                  |
+      | students      | estudiante@example.com  |
+      | collaborators | colaborador@example.com |
+
+  Esquema del escenario: Consulta de Cursos por Rol sin resultados
+    Dado que existe un curso
+    Y el "<userId>" no se encuentra inscripto como "<rol>"
+    Cuando consulto los cursos a los que está inscripto el "<rol>" "<userId>"
+    Entonces se deberá notificar al usuario que no existen resultados para su búsqueda
 
     Ejemplos:
       | rol           | userId                  |

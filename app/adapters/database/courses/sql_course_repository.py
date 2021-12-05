@@ -93,14 +93,19 @@ def save_collaborator(db, course_id, user_id):
     return db_collaborator
 
 
-def get_courses_for_student(db: Session, role: str, user_id: str, skip: int = 0, limit: int = 100) -> List[Course]:
+def get_courses_for_student(db: Session, user_id: str, skip: int = 0, limit: int = 100) -> List[Course]:
     query = db.query(model.Student) \
         .join(model.Course.students) \
         .filter(model.Student.id == user_id) \
         .order_by(model.Course.id)
+
     db_students = query.offset(skip).limit(limit).all()
 
     db_courses = [student.course for student in db_students]
+
+    if len(db_courses) == 0:
+        raise CoursesNotFoundError()
+
     return [db_course.to_entity() for db_course in db_courses]
 
 
@@ -109,7 +114,12 @@ def get_courses_for_collaborator(db: Session, user_id: str, skip: int = 0, limit
         .join(model.Course.collaborators) \
         .filter(model.Collaborator.id == user_id) \
         .order_by(model.Course.id)
+
     db_collaborators = query.offset(skip).limit(limit).all()
 
     db_courses = [collaborator.course for collaborator in db_collaborators]
+
+    if len(db_courses) == 0:
+        raise CoursesNotFoundError()
+
     return [db_course.to_entity() for db_course in db_courses]

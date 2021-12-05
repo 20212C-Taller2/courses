@@ -67,7 +67,7 @@ def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depe
 def get_courses_for_user_by_role(role: str, user_id: str, skip: int = 0, limit: int = 100,
                                  db: Session = Depends(get_db)):
     if role == 'students':
-        return sql_course_repository.get_courses_for_student(db, role, user_id, skip, limit)
+        return sql_course_repository.get_courses_for_student(db, user_id, skip, limit)
     elif role == 'collaborators':
         return sql_course_repository.get_courses_for_collaborator(db, user_id, skip, limit)
 

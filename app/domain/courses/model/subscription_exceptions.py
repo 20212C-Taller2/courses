@@ -1,7 +1,8 @@
 class SubscriptionError(Exception):
-    def __init__(self, message: str):
+    def __init__(self, code: str, message: str):
+        self.code = code
         self.message = message
-        super().__init__(self.message)
+        super().__init__(self.code, self.message)
 
     def __str__(self):
         return self.message
@@ -9,4 +10,4 @@ class SubscriptionError(Exception):
 
 class SubscriptionNotFoundError(SubscriptionError):
     def __init__(self, name: str):
-        super(SubscriptionNotFoundError, self).__init__(f'Subscription {name} not found')
+        super(SubscriptionNotFoundError, self).__init__('SUBSCRIPTION_NOT_FOUND', f'Subscription {name} not found')
