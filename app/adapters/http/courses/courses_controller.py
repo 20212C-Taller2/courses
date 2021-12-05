@@ -68,11 +68,11 @@ def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depe
 
 
 @router.get("/{role}/{user_id}", response_model=List[courses.Course], status_code=status.HTTP_200_OK)
-def get_courses_for_user_by_role(role: str, user_id: str, db: Session = Depends(get_db)):
+def get_courses_for_user_by_role(role: str, user_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     if role == 'students':
-        return sql_course_repository.get_courses_for_student(db, role, user_id)
+        return sql_course_repository.get_courses_for_student(db, role, user_id, skip, limit)
     elif role == 'collaborators':
-        return sql_course_repository.get_courses_for_collaborator(db, user_id)
+        return sql_course_repository.get_courses_for_collaborator(db, user_id, skip, limit)
 
 
 @router.delete("/{course_id}/students/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
