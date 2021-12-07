@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.types import ARRAY
 
 from app.db.database import BaseModelDb
-from app.domain.courses.model.courses import Course as ModelCourse
+from app.domain.courses.courses import Course as ModelCourse
 
 
 class Course(BaseModelDb):

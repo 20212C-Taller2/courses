@@ -1,4 +1,4 @@
-from app.adapters.http.subscriptions.SubscriptionsService import SubscriptionsService
+from app.adapters.http.subscriptions.subscriptions_service import SubscriptionsService
 from app.db.database import SessionLocal
 
 

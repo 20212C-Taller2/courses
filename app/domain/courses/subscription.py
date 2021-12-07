@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-from app.adapters.http.subscriptions.SubscriptionsService import SubscriptionsService
-from app.domain.courses.model.subscription_exceptions import SubscriptionNotFoundError
+from app.adapters.http.subscriptions.subscriptions_service import SubscriptionsService
+from app.domain.courses.subscription_exceptions import SubscriptionNotFoundError
 
 
 class Subscription(BaseModel):

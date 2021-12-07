@@ -4,10 +4,10 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from app.adapters.database.courses import model
-from app.domain.courses.model import courses
-from app.domain.courses.model.course_exceptions import CourseNotFoundError, CoursesNotFoundError
-from app.domain.courses.model.course_type import CourseType
-from app.domain.courses.model.courses import Course
+from app.domain.courses import courses
+from app.domain.courses.course_exceptions import CourseNotFoundError, CoursesNotFoundError
+from app.domain.courses.course_type import CourseType
+from app.domain.courses.courses import Course
 
 
 def get_courses(db: Session, type: CourseType, subscription: str, creator: str,

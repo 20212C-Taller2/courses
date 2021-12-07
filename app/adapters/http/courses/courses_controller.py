@@ -5,11 +5,11 @@ from sqlalchemy.orm import Session
 from starlette.responses import Response
 
 from app.adapters.database.courses import sql_course_repository
-from app.adapters.http.subscriptions.SubscriptionsService import SubscriptionsService
+from app.adapters.http.subscriptions.subscriptions_service import SubscriptionsService
 from app.dependencies import get_db, get_subscriptions_service
-from app.domain.courses.model import courses
-from app.domain.courses.model.course_type import CourseType
-from app.domain.courses.model.subscription import Subscription
+from app.domain.courses import courses
+from app.domain.courses.course_type import CourseType
+from app.domain.courses.subscription import Subscription
 
 router = APIRouter(
     prefix="/courses",

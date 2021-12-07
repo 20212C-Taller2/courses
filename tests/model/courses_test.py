@@ -2,8 +2,8 @@ import unittest
 
 from pydantic import ValidationError
 
-from app.domain.courses.model.course_type import CourseType
-from app.domain.courses.model.courses import CourseCreate
+from app.domain.courses.course_type import CourseType
+from app.domain.courses.courses import CourseCreate
 from tests.examples.course_example import CourseExample
 
 

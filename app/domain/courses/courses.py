@@ -7,7 +7,7 @@ from typing import Optional, Set
 from pydantic import BaseModel, constr
 from pydantic.class_validators import List
 
-from app.domain.courses.model.course_type import CourseType
+from app.domain.courses.course_type import CourseType
 
 
 class CourseBase(BaseModel):

@@ -1,9 +1,9 @@
 from fastapi import status, Request
 from starlette.responses import JSONResponse
 
-from app.domain.courses.model.course_exceptions import CourseError
-from app.domain.courses.model.exam_exceptions import ExamError
-from app.domain.courses.model.subscription_exceptions import SubscriptionError
+from app.domain.courses.course_exceptions import CourseError
+from app.domain.exams.exam_exceptions import ExamError
+from app.domain.courses.subscription_exceptions import SubscriptionError
 
 
 async def exam_error_exception_handler(

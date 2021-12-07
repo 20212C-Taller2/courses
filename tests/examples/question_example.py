@@ -1,4 +1,4 @@
-from app.domain.courses.model.questions import Question
+from app.domain.exams.questions import Question
 
 
 class QuestionExample(object):

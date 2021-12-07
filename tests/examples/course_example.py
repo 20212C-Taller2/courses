@@ -1,5 +1,5 @@
-from app.domain.courses.model.course_type import CourseType
-from app.domain.courses.model.courses import Course
+from app.domain.courses.course_type import CourseType
+from app.domain.courses.courses import Course
 
 
 class CourseExample(object):

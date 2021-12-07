@@ -1,6 +1,6 @@
 import unittest
 
-from app.domain.courses.model.course_type import CourseType
+from app.domain.courses.course_type import CourseType
 
 
 class TestCourseTypes(unittest.TestCase):

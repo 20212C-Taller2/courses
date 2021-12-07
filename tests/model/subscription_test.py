@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import Mock
 
-from app.domain.courses.model.subscription import Subscription
-from app.domain.courses.model.subscription_exceptions import SubscriptionNotFoundError
+from app.domain.courses.subscription import Subscription
+from app.domain.courses.subscription_exceptions import SubscriptionNotFoundError
 
 
 class TestSubscription(unittest.TestCase):

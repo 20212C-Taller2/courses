@@ -46,8 +46,7 @@ def step_impl(context):
 def step_impl(context):
     context.response = post_course(context, create_course({}))
 
-    response = context.response.json()
-    context.vars['created'] = response
+    context.vars['created'] = context.response.json()
 
     assert context.response.status_code == 201
 

@@ -17,7 +17,7 @@ Característica: Creación de Examen
     Entonces se creará un nuevo examen
 
   Escenario: Consulta de exámenes por curso
-    Y que existe un examen
+    Dado que existe un examen
     Cuando se consulta por los exámenes del curso
     Entonces obtengo el detalle de los exámenes del curso
 

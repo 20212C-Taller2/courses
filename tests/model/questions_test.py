@@ -2,7 +2,7 @@ import unittest
 
 from pydantic import ValidationError
 
-from app.domain.courses.model.questions import Question
+from app.domain.exams.questions import Question
 
 
 class TestQuestionUseCase(unittest.TestCase):
