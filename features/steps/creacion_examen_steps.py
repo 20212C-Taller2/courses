@@ -1,4 +1,4 @@
-from behave import given, when, then
+from behave import step, when, then
 
 from features.steps.support import json_headers
 
@@ -41,9 +41,9 @@ def step_impl(context):
         assert expected_question['text'] == actual_question['text']
 
 
-@given(u'que existe un examen')
+@step(u'que existe un examen')
 def step_impl(context):
-    context.vars['course_id'] = context.response.json()['id']
+    # context.vars['course_id'] = context.response.json()['course_id']
 
     exam_body = {
         "title": "dummy exam",
@@ -56,7 +56,7 @@ def step_impl(context):
     }
 
     context.response = context.client.post(
-        "/courses/{}/exams".format(context.vars['course_id']),
+        "/courses/{}/exams".format(context.vars['created']['id']),
         json=exam_body,
         headers=json_headers()
     )

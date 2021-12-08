@@ -1,6 +1,8 @@
 from pydantic import BaseModel, conlist, constr
+from pydantic.dataclasses import dataclass
 
 from app.domain.exams.answer import Answer
+from app.domain.exams.review import Review
 
 
 class SubmittedExam(BaseModel):
@@ -9,3 +11,16 @@ class SubmittedExam(BaseModel):
 
     class Config:
         orm_mode = True
+
+    def correct(self, review: Review):
+        return RevisedExam(self, review)
+
+
+@dataclass
+class RevisedExam:
+    submitted_exam: SubmittedExam
+    review: Review
+
+    def __init__(self, submitted_exam: SubmittedExam, review: Review):
+        self.submitted_exam = submitted_exam
+        self.review = review
