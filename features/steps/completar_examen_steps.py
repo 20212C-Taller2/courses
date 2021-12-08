@@ -18,7 +18,7 @@ def step_impl(context):
     exam = context.vars['exam']
     context.vars['exam_submit'] = {
         "student": context.vars['student']['id'],
-        "answers": [{"question": question, "text": "answer"} for question in exam['questions']]
+        "answers": [{"question_id": question['id'], "text": "answer"} for question in exam['questions']]
     }
 
 

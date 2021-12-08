@@ -1,8 +1,16 @@
 from pydantic import BaseModel, conlist, constr
 from pydantic.dataclasses import dataclass
 
-from app.domain.exams.answer import Answer
+from app.domain.exams.answer import AnswerCreate, Answer
 from app.domain.exams.review import Review
+
+
+class SubmittedExamCreate(BaseModel):
+    student: constr(min_length=1)
+    answers: conlist(AnswerCreate, min_items=1)
+
+    class Config:
+        orm_mode = True
 
 
 class SubmittedExam(BaseModel):

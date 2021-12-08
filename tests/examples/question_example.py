@@ -1,4 +1,4 @@
-from app.domain.exams.questions import Question
+from app.domain.exams.questions import QuestionCreate
 
 
 class QuestionExample(object):
@@ -7,8 +7,8 @@ class QuestionExample(object):
         self.text = 'question text'
 
     def build(self):
-        return Question(number=self.number,
-                        text=self.text)
+        return QuestionCreate(number=self.number,
+                              text=self.text)
 
     def with_number(self, number: int):
         self.number = number

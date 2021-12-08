@@ -7,7 +7,7 @@ from app.adapters.database.courses import sql_course_repository, sql_exam_reposi
 from app.dependencies import get_db
 from app.domain.exams import exams
 from app.domain.exams.review import Review
-from app.domain.exams.submitted_exam import SubmittedExam, RevisedExam
+from app.domain.exams.submitted_exam import RevisedExam, SubmittedExamCreate
 
 router = APIRouter(
     prefix='/courses/{course_id}/exams',
@@ -25,13 +25,13 @@ def create_exam(course_id: int, exam: exams.ExamCreate,
     return sql_exam_repository.create_exam(db=db, course_id=course.id, exam_model=exam)
 
 
-@router.get("", response_model=List[exams.ExamCreate], status_code=status.HTTP_200_OK)
+@router.get("", response_model=List[exams.Exam], status_code=status.HTTP_200_OK)
 def get_course_exams(course_id: int, db: Session = Depends(get_db)) -> List[exams.ExamCreate]:
     return sql_exam_repository.get_course_exams(db=db, course_id=course_id)
 
 
 @router.post("/{exam_id}", status_code=status.HTTP_201_CREATED)
-def submit_exam(course_id: int, exam_id: int, submitted_exam: SubmittedExam,
+def submit_exam(course_id: int, exam_id: int, submitted_exam: SubmittedExamCreate,
                 db: Session = Depends(get_db)):
     # TODO: Validaciones
     #   - Obtener el curso

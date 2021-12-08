@@ -49,8 +49,7 @@ def submit_exam(db: Session, course_id: int, exam_id: int, submitted_exam: Submi
     db.add(db_submitted_exam)
 
     for answer in submitted_exam.answers:
-        question = filter(lambda q: answer.question.text == q.text, db_exam.questions)
-        db_answer = model.Answer(question_id=list(question)[0].id,
+        db_answer = model.Answer(question_id=answer.question_id,
                                  text=answer.text)
         db_submitted_exam.answers.append(db_answer)
 

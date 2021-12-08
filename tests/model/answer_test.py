@@ -3,7 +3,7 @@ import unittest
 from pydantic import ValidationError
 
 from app.domain.exams.answer import Answer
-from app.domain.exams.questions import Question
+from app.domain.exams.questions import QuestionCreate
 from tests.examples.question_example import QuestionExample
 
 
@@ -12,7 +12,7 @@ class TestAnswerUseCase(unittest.TestCase):
         answer = Answer(question=QuestionExample().build(),
                         text="question answer")
 
-        self.assertIsInstance(answer.question, Question)
+        self.assertIsInstance(answer.question, QuestionCreate)
         self.assertIsInstance(answer.text, str)
 
     def test_answer_should_not_have_empty_answer(self):

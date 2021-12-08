@@ -87,6 +87,7 @@ class Question(BaseModelDb):
 
     def to_entity(self) -> QuestionModel:
         return QuestionModel(
+            id=self.id,
             number=self.number,
             text=self.text
         )
