@@ -11,7 +11,8 @@ from app.domain.courses.courses import Course as ModelCourse
 from app.domain.exams.answer import Answer as AnswerModel
 from app.domain.exams.exams import Exam as ExamModel
 from app.domain.exams.questions import Question as QuestionModel
-from app.domain.exams.submitted_exam import SubmittedExam as SubmittedExamModel
+from app.domain.exams.review import Review
+from app.domain.exams.submitted_exam import RevisedExam as RevisedExamModel
 
 
 class Course(BaseModelDb):
@@ -101,14 +102,26 @@ class SubmittedExam(BaseModelDb):
     course_id = Column(Integer)
     exam_id = Column(Integer, ForeignKey('exams.id'))
     answers = relationship("Answer", backref="submitted_exam", lazy="joined")
+    review = relationship("RevisedExam", uselist=False, lazy="joined")
 
     __table_args__ = (ForeignKeyConstraint([student_id, course_id],
                                            [Student.id, Student.course_id]),
                       {})
 
-    def to_entity(self) -> SubmittedExamModel:
-        return SubmittedExamModel(student=self.student_id,
-                                  answers=[answer.to_entity() for answer in self.answers])
+    def to_entity(self) -> RevisedExamModel:
+        if self.review is None:
+            return RevisedExamModel(id=self.id,
+                                    exam_id=self.exam_id,
+                                    student=self.student_id,
+                                    answers=[answer.to_entity() for answer in self.answers],
+                                    review=None)
+        else:
+            review_model = Review(user=self.review.reviewer_id, role=self.review.reviewer_role, grade=self.review.grade)
+            return RevisedExamModel(id=self.id,
+                                    exam_id=self.exam_id,
+                                    student=self.student_id,
+                                    answers=[answer.to_entity() for answer in self.answers],
+                                    review=review_model)
 
 
 class RevisedExam(BaseModelDb):
@@ -128,7 +141,7 @@ class Answer(BaseModelDb):
     question_id = Column(Integer, ForeignKey('questions.id'))
     submitted_exam_id = Column(Integer, ForeignKey('submitted_exams.id'))
     text = Column(String, nullable=False)
-    question = relationship("Question", backref="answer")
+    question = relationship("Question", backref="answer", lazy="joined")
 
     def to_entity(self):
         return AnswerModel(question=self.question.to_entity(),

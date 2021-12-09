@@ -11,3 +11,8 @@ class ExamError(Exception):
 class ExamsNotFoundError(ExamError):
     def __init__(self, course_id: int):
         super(ExamsNotFoundError, self).__init__('EXAMS_NOT_FOUND', f'No exams found for course {course_id}')
+
+
+class SubmittedExamsNotFoundError(ExamError):
+    def __init__(self):
+        super(SubmittedExamsNotFoundError, self).__init__('SUBMITTED_EXAMS_NOT_FOUND', f'No submitted exams found')

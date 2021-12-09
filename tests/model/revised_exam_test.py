@@ -1,7 +1,7 @@
 import unittest
 
 from app.domain.exams.review import Review
-from app.domain.exams.submitted_exam import SubmittedExam
+from app.domain.exams.submitted_exam import SubmittedExam, RevisedExam
 from tests.examples.submitted_exam_example import SubmittedExamExample
 
 
@@ -12,7 +12,7 @@ class TestRevisedExamUseCase(unittest.TestCase):
 
         revised_exam = submitted_exam.correct(review)
 
-        self.assertIsInstance(revised_exam.submitted_exam, SubmittedExam)
+        self.assertIsInstance(revised_exam, RevisedExam)
         self.assertIsInstance(revised_exam.review, Review)
 
 

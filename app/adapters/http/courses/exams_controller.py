@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
@@ -53,3 +53,9 @@ def review_exam(course_id: int, submitted_exam_id: int, review: Review,
     sql_exam_repository.save_review_exam(db, submitted_exam_id, revised_exam)
 
     return revised_exam
+
+
+@router.get("/submissions", response_model=List[RevisedExam], status_code=status.HTTP_200_OK)
+def get_submitted_exams(course_id: int, student_id: Optional[str] = None, exam_id: Optional[int] = None,
+                        skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return sql_exam_repository.get_submmited_exams(db, course_id, student_id, exam_id, skip, limit)

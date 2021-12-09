@@ -4,11 +4,14 @@ from pydantic import ValidationError
 
 from app.domain.exams.submitted_exam import SubmittedExam
 from tests.examples.answer_example import AnswerExample
+from tests.examples.submitted_exam_example import SubmittedExamExample
 
 
 class TestSubmittedExamUseCase(unittest.TestCase):
     def test_submitted_exam_attributes(self):
-        submitted_exam = SubmittedExam(student='student@example.com',
+        submitted_exam = SubmittedExam(id=1,
+                                       exam_id=1,
+                                       student='student@example.com',
                                        answers=[AnswerExample().build()])
 
         self.assertIsInstance(submitted_exam.student, str)
@@ -16,15 +19,13 @@ class TestSubmittedExamUseCase(unittest.TestCase):
 
     def test_submitted_exam_student_should_not_be_empty(self):
         def submitted_exam_without_student():
-            return SubmittedExam(student='',
-                                 answers=[AnswerExample().build()])
+            return SubmittedExamExample().with_student('').build()
 
         self.assertRaises(ValidationError, submitted_exam_without_student)
 
     def test_submitted_exam_answers_should_not_be_empty(self):
         def submitted_exam_without_answers():
-            return SubmittedExam(student='student@example.com',
-                                 answers=[])
+            return SubmittedExamExample().with_answers([]).build()
 
         self.assertRaises(ValidationError, submitted_exam_without_answers)
 

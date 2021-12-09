@@ -2,13 +2,20 @@ import unittest
 
 from pydantic import ValidationError
 
-from app.domain.exams.questions import QuestionCreate
+from app.domain.exams.questions import QuestionCreate, Question
 
 
 class TestQuestionUseCase(unittest.TestCase):
-    def test_question_attributes(self):
+    def test_question_create_attributes(self):
         question = QuestionCreate(number=1, text='question')
 
+        self.assertIsInstance(question.number, int)
+        self.assertIsInstance(question.text, str)
+
+    def test_question_attributes(self):
+        question = Question(id=1, number=1, text='question')
+
+        self.assertIsInstance(question.id, int)
         self.assertIsInstance(question.number, int)
         self.assertIsInstance(question.text, str)
 

@@ -1,5 +1,6 @@
+from typing import Optional
+
 from pydantic import BaseModel, conlist, constr
-from pydantic.dataclasses import dataclass
 
 from app.domain.exams.answer import AnswerCreate, Answer
 from app.domain.exams.review import Review
@@ -14,6 +15,8 @@ class SubmittedExamCreate(BaseModel):
 
 
 class SubmittedExam(BaseModel):
+    id: int
+    exam_id: int
     student: constr(min_length=1)
     answers: conlist(Answer, min_items=1)
 
@@ -21,14 +24,12 @@ class SubmittedExam(BaseModel):
         orm_mode = True
 
     def correct(self, review: Review):
-        return RevisedExam(self, review)
+        return RevisedExam(id=self.id,
+                           exam_id=self.exam_id,
+                           student=self.student,
+                           answers=self.answers,
+                           review=review)
 
 
-@dataclass
-class RevisedExam:
-    submitted_exam: SubmittedExam
-    review: Review
-
-    def __init__(self, submitted_exam: SubmittedExam, review: Review):
-        self.submitted_exam = submitted_exam
-        self.review = review
+class RevisedExam(SubmittedExam):
+    review: Optional[Review] = None
