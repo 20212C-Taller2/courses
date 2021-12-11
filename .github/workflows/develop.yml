@@ -1,4 +1,4 @@
-name: courses-api-deploy
+name: courses-api-deploy-develop
 
 on:
   push:
