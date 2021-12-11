@@ -1,17 +1,18 @@
+from itertools import zip_longest
 from typing import List
 
 from sqlalchemy.orm import Session
 
 from app.adapters.database.courses import model
 from app.domain.exams.exam_exceptions import ExamsNotFoundError, SubmittedExamsNotFoundError
-from app.domain.exams.exams import ExamCreate as ExamModel
+from app.domain.exams.exams import ExamCreate as ExamModel, Exam
 from app.domain.exams.submitted_exam import SubmittedExam, RevisedExam
 
 
 def create_exam(db: Session, course_id: int, exam_model: ExamModel):
     db_course = db.query(model.Course).get(course_id)
 
-    db_exam = model.Exam(course_id=course_id, title=exam_model.title)
+    db_exam = model.Exam(course_id=course_id, title=exam_model.title, published=exam_model.published)
     db_course.exams.append(db_exam)
 
     questions = [model.Question(number=question.number,
@@ -99,3 +100,28 @@ def get_submmited_exams(db: Session, course_id: int, student_id: str, exam_id: i
         raise SubmittedExamsNotFoundError()
 
     return [db_submitted_exam.to_entity() for db_submitted_exam in db_submitted_exams]
+
+
+def update_exam(db: Session, exam_id: int, edited_exam: Exam):
+    db_exam = db.query(model.Exam).get(exam_id)
+
+    for var, value in vars(edited_exam).items():
+        setattr(db_exam, var, value) if (value and not isinstance(value, list)) else None
+
+    db_questions = db.query(model.Question).filter(model.Exam.id == exam_id).all()
+
+    for db_question, edited_question in zip_longest(db_questions, edited_exam.questions):
+        if db_question is not None and edited_question is not None:
+            for var, value in vars(edited_question).items():
+                setattr(db_question, var, value) if value else None
+        elif db_question is not None and edited_question is None:
+            db_exam.questions.remove(db_question)
+        elif db_question is None and edited_question is not None:
+            db_exam.questions.append(model.Question(number=edited_question.number,
+                                                    text=edited_question.text))
+
+    db.add(db_exam)
+    db.commit()
+    db.refresh(db_exam)
+
+    return db_exam.to_entity()

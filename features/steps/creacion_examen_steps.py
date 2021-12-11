@@ -1,23 +1,23 @@
 from behave import step, when, then
 
-from features.steps.support import json_headers
+from features.steps.support import json_headers, create_exam
 
 
-@when(u'un creador inicia la creación de un examen con titulo "{}"')
+@step(u'un creador inicia la creación de un examen con titulo "{}"')
 def step_impl(context, title):
     exam = {'title': title, 'published': True}
 
     context.vars['exam'] = exam
 
 
-@when(u'contiene las preguntas')
+@step(u'contiene las preguntas')
 def step_impl(context):
     exam = context.vars['exam']
     exam['questions'] = [{'number': int(question['number']), 'text': question['text']} for question in context.table]
     context.vars['exam'] = exam
 
 
-@when(u'publica el examen')
+@step(u'publica el examen')
 def step_impl(context):
     course_id = context.response.json()['id']
 
@@ -26,6 +26,8 @@ def step_impl(context):
         json=context.vars['exam'],
         headers=json_headers()
     )
+
+    context.vars['created-exam'] = context.response.json()
 
 
 @then(u'se creará un nuevo examen')
@@ -36,6 +38,8 @@ def step_impl(context):
     actual_exam = context.response.json()
 
     assert expected_exam['title'] == actual_exam['title']
+    assert expected_exam['published'] == actual_exam['published']
+
     assert len(expected_exam['questions']) == len(actual_exam['questions'])
     for expected_question, actual_question in zip(expected_exam['questions'], actual_exam['questions']):
         assert expected_question['number'] == actual_question['number']
@@ -44,16 +48,7 @@ def step_impl(context):
 
 @step(u'que existe un examen')
 def step_impl(context):
-    exam_body = {
-        "title": "dummy exam",
-        "published": True,
-        "questions": [
-            {
-                "number": 1,
-                "text": "dummy question"
-            }
-        ]
-    }
+    exam_body = create_exam()
 
     context.response = context.client.post(
         "/courses/{}/exams".format(context.vars['created']['id']),

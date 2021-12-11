@@ -42,3 +42,17 @@ def post_course(context, new_course):
             headers=json_headers(),
             json=new_course
         )
+
+
+def create_exam():
+    example_exam = {
+        "title": "dummy exam",
+        "published": False,
+        "questions": [
+            {
+                "number": 1,
+                "text": "dummy question"
+            }
+        ]
+    }
+    return example_exam

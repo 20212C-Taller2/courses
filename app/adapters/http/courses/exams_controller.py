@@ -30,6 +30,12 @@ def get_course_exams(course_id: int, db: Session = Depends(get_db)) -> List[exam
     return sql_exam_repository.get_course_exams(db=db, course_id=course_id)
 
 
+@router.put("/{exam_id}", response_model=exams.Exam, status_code=status.HTTP_200_OK)
+def edit_exam(exam_id: int, exam: exams.ExamCreate,
+              db: Session = Depends(get_db)):
+    return sql_exam_repository.update_exam(db, exam_id, exam)
+
+
 @router.post("/{exam_id}", status_code=status.HTTP_201_CREATED)
 def submit_exam(course_id: int, exam_id: int, submitted_exam: SubmittedExamCreate,
                 db: Session = Depends(get_db)):

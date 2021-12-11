@@ -67,7 +67,7 @@ class Exam(BaseModelDb):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String, nullable=False)
-    published = Column(Boolean, nullable=False, default=False)
+    published = Column(Boolean, nullable=False)
     course_id = Column(Integer, ForeignKey('courses.id'))
     questions = relationship("Question", backref="exam", lazy="joined")
 
