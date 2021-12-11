@@ -11,3 +11,8 @@ install:
 script: pytest # run tests
 after_success:
   - codecov # submit coverage
+
+branches:
+  only:
+    - main
+    - develop
