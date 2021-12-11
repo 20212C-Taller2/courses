@@ -2,7 +2,7 @@
 Modelos para el ORM de la base de datos
 """
 
-from sqlalchemy import Column, Integer, String, ForeignKey, ForeignKeyConstraint
+from sqlalchemy import Column, Integer, String, ForeignKey, ForeignKeyConstraint, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import ARRAY
 
@@ -67,6 +67,7 @@ class Exam(BaseModelDb):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String, nullable=False)
+    published = Column(Boolean, nullable=False, default=False)
     course_id = Column(Integer, ForeignKey('courses.id'))
     questions = relationship("Question", backref="exam", lazy="joined")
 
@@ -74,6 +75,7 @@ class Exam(BaseModelDb):
         return ExamModel(
             id=self.id,
             title=self.title,
+            published=self.published,
             questions=[question.to_entity() for question in self.questions]
         )
 

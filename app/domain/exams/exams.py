@@ -5,6 +5,7 @@ from app.domain.exams.questions import QuestionCreate, Question
 
 class ExamCreate(BaseModel):
     title: constr(min_length=1)
+    published: bool
     questions: conlist(QuestionCreate, min_items=1)
 
     class Config:

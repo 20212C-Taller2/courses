@@ -5,7 +5,8 @@ from features.steps.support import json_headers
 
 @when(u'un creador inicia la creación de un examen con titulo "{}"')
 def step_impl(context, title):
-    exam = {'title': title}
+    exam = {'title': title, 'published': True}
+
     context.vars['exam'] = exam
 
 
@@ -43,10 +44,9 @@ def step_impl(context):
 
 @step(u'que existe un examen')
 def step_impl(context):
-    # context.vars['course_id'] = context.response.json()['course_id']
-
     exam_body = {
         "title": "dummy exam",
+        "published": True,
         "questions": [
             {
                 "number": 1,
