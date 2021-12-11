@@ -13,7 +13,7 @@ Característica: Creación de Examen
       | number | text             |
       | 1      | primera pregunta |
       | 2      | segunda pregunta |
-    Y publica el examen
+    Y crea el examen
     Entonces se creará un nuevo examen
 
   Escenario: Consulta de exámenes por curso
@@ -24,6 +24,19 @@ Característica: Creación de Examen
   Escenario: Consulta de exámenes de un curso con ninguno
     Cuando se consulta por los exámenes del curso
     Entonces recibo un mensaje de error
+
+  Escenario: Consulta de exámenes publicados
+    Dado que existe un examen
+    Y que existe un examen
+    Y el creador lo publica
+    Cuando se consulta por los exámenes publicados del curso
+    Entonces obtengo el detalle de los exámenes publicados del curso
+
+  Escenario: Consulta de exámenes no publicados
+    Dado que existe un examen
+    Y que existe un examen
+    Cuando se consulta por los exámenes no publicados del curso
+    Entonces obtengo el detalle de los exámenes no publicados del curso
 
   @wip
   Escenario: Creación de examen fallida

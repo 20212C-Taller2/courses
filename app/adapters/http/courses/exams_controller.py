@@ -26,8 +26,9 @@ def create_exam(course_id: int, exam: exams.ExamCreate,
 
 
 @router.get("", response_model=List[exams.Exam], status_code=status.HTTP_200_OK)
-def get_course_exams(course_id: int, db: Session = Depends(get_db)) -> List[exams.ExamCreate]:
-    return sql_exam_repository.get_course_exams(db=db, course_id=course_id)
+def get_course_exams(course_id: int, published: Optional[bool] = None,
+                     db: Session = Depends(get_db)) -> List[exams.ExamCreate]:
+    return sql_exam_repository.get_course_exams(db=db, course_id=course_id, published=published)
 
 
 @router.put("/{exam_id}", response_model=exams.Exam, status_code=status.HTTP_200_OK)

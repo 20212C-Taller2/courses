@@ -28,9 +28,14 @@ def create_exam(db: Session, course_id: int, exam_model: ExamModel):
     return db_exam.to_entity()
 
 
-def get_course_exams(db: Session, course_id: int) -> List[ExamModel]:
-    db_course_exams = db.query(model.Exam) \
-        .filter(model.Exam.course_id == course_id) \
+def get_course_exams(db: Session, course_id: int, published: bool) -> List[ExamModel]:
+    exams_query = db.query(model.Exam) \
+        .filter(model.Exam.course_id == course_id)
+
+    if published is not None:
+        exams_query = exams_query.filter(model.Exam.published == published)
+
+    db_course_exams = exams_query \
         .order_by(model.Exam.id) \
         .all()
 
@@ -108,9 +113,7 @@ def update_exam(db: Session, exam_id: int, edited_exam: Exam):
     for var, value in vars(edited_exam).items():
         setattr(db_exam, var, value) if (value and not isinstance(value, list)) else None
 
-    db_questions = db.query(model.Question).filter(model.Exam.id == exam_id).all()
-
-    for db_question, edited_question in zip_longest(db_questions, edited_exam.questions):
+    for db_question, edited_question in zip_longest(db_exam.questions, edited_exam.questions):
         if db_question is not None and edited_question is not None:
             for var, value in vars(edited_question).items():
                 setattr(db_question, var, value) if value else None

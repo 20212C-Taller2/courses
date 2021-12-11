@@ -17,7 +17,7 @@ def step_impl(context):
     context.vars['exam'] = exam
 
 
-@step(u'publica el examen')
+@step(u'crea el examen')
 def step_impl(context):
     course_id = context.response.json()['id']
 
@@ -61,6 +61,22 @@ def step_impl(context):
     assert context.response.status_code == 201
 
 
+@step("el creador lo publica")
+def step_impl(context):
+    published_exam = context.vars['exam']
+    published_exam['published'] = True
+
+    context.response = context.client.put(
+        "/courses/{}/exams/{}".format(context.vars['created']['id'], published_exam['id']),
+        json=published_exam,
+        headers=json_headers()
+    )
+
+    context.vars['exam'] = context.response.json()
+
+    assert context.response.status_code == 200
+
+
 @when(u'se consulta por los exámenes del curso')
 def step_impl(context):
     context.response = context.client.get(
@@ -82,3 +98,39 @@ def step_impl(context):
     for expected_question, current_question in zip(expected_exam['questions'], current_exam['questions']):
         assert expected_question['number'] == current_question['number']
         assert expected_question['text'] == current_question['text']
+
+
+@step("se consulta por los exámenes publicados del curso")
+def step_impl(context):
+    context.response = context.client.get(
+        "/courses/{}/exams?published=true".format(context.vars['created']['id']),
+        headers=json_headers()
+    )
+
+    assert context.response.status_code == 200
+
+
+@step("obtengo el detalle de los exámenes publicados del curso")
+def step_impl(context):
+    current_exams = context.response.json()
+
+    for current_exam in current_exams:
+        assert current_exam['published'] == True
+
+
+@step("se consulta por los exámenes no publicados del curso")
+def step_impl(context):
+    context.response = context.client.get(
+        "/courses/{}/exams?published=false".format(context.vars['created']['id']),
+        headers=json_headers()
+    )
+
+    assert context.response.status_code == 200
+
+
+@step("obtengo el detalle de los exámenes no publicados del curso")
+def step_impl(context):
+    current_exams = context.response.json()
+
+    for current_exam in current_exams:
+        assert current_exam['published'] == False

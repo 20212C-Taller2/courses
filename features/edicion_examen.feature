@@ -10,7 +10,7 @@ Característica: Edición de examen
       | number | text             |
       | 1      | primera pregunta |
       | 2      | segunda pregunta |
-    Y publica el examen
+    Y crea el examen
 
   Escenario: Edición de examen exitosa con misma cantidad de preguntas
     Cuando un creador edite el titulo por "Examen editado"
