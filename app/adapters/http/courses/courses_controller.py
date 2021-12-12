@@ -10,6 +10,7 @@ from app.dependencies import get_db, get_subscriptions_service
 from app.domain.courses import courses
 from app.domain.courses.course_type import CourseType
 from app.domain.courses.subscription import Subscription
+from app.ports.logger import logger
 
 router = APIRouter(
     prefix="/courses",
@@ -23,6 +24,7 @@ router = APIRouter(
 def read_courses(type: Optional[CourseType] = None, subscription: Optional[str] = None,
                  creator: Optional[str] = None, skip: int = 0, limit: int = 100,
                  db: Session = Depends(get_db)):
+    logger.info(f'Consultando cursos')
     return sql_course_repository.get_courses(db, type, subscription, creator, skip=skip, limit=limit)
 
 
