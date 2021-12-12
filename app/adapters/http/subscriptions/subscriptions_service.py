@@ -1,10 +1,11 @@
 from typing import List
 
 import requests
+from app.conf.config import settings
 
 
 class SubscriptionsService:
-    host = 'https://ubademy-subscriptions-api.herokuapp.com'
+    host = settings.HOST_SUBSCRIPTIONS_API
 
     def get_subscriptions(self) -> List[str]:
         url = "{}/subscriptions".format(self.host)
