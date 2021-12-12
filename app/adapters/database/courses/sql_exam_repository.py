@@ -68,7 +68,7 @@ def submit_exam(db: Session, course_id: int, exam_id: int, submitted_exam: Submi
 def save_review_exam(db: Session, submitted_exam_id: int, revised_exam: RevisedExam):
     db_reviewed_exam = model.RevisedExam(submitted_exam_id=submitted_exam_id,
                                          reviewer_id=revised_exam.review.user,
-                                         reviewer_role=revised_exam.review.role,
+                                         feedback=revised_exam.review.feedback,
                                          grade=revised_exam.review.grade)
 
     db.add(db_reviewed_exam)

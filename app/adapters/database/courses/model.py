@@ -118,7 +118,7 @@ class SubmittedExam(BaseModelDb):
                                     answers=[answer.to_entity() for answer in self.answers],
                                     review=None)
         else:
-            review_model = Review(user=self.review.reviewer_id, role=self.review.reviewer_role, grade=self.review.grade)
+            review_model = Review(user=self.review.reviewer_id, feedback=self.review.feedback, grade=self.review.grade)
             return RevisedExamModel(id=self.id,
                                     exam_id=self.exam_id,
                                     student=self.student_id,
@@ -127,12 +127,12 @@ class SubmittedExam(BaseModelDb):
 
 
 class RevisedExam(BaseModelDb):
-    __tablename__ = "revised_exams"
+    __tablename__ = "exams_reviews"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     submitted_exam_id = Column(Integer, ForeignKey('submitted_exams.id'))
     reviewer_id = Column(String, nullable=False)
-    reviewer_role = Column(String, nullable=False)
+    feedback = Column(String, nullable=True)
     grade = Column(Integer, nullable=False)
 
 

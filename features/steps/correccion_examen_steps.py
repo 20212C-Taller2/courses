@@ -16,14 +16,14 @@ def step_impl(context):
     context.execute_steps('cuando su creador asigna al usuario "collaborator@example.com" como colaborador')
 
 
-@step('el "(?P<rol>.+)" "(?P<userId>.+)" realiza la corrección de un examen de manera correcta')
-def step_impl(context, rol, userId):
+@step('el "(?P<user_id>.+)" realiza la corrección de un examen de manera correcta con el comentario "(?P<feedback>.+)"')
+def step_impl(context, user_id, feedback):
     course_id = context.vars['created']['id']
     exam_id = context.vars['exam']['id']
 
     context.vars['revised_exam'] = {
-        "role": rol,
-        "user": userId,
+        "feedback": feedback,
+        "user": user_id,
         "grade": 10
     }
 
