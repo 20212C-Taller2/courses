@@ -24,7 +24,7 @@ target_metadata = BaseModelDb.metadata
 # ... etc.
 
 def get_url():
-    return os.environ["FASTAPI_POSTGRESQL"]
+    return os.environ["DATABASE_URL"]
 
 
 def run_migrations_offline():

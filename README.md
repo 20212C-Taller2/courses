@@ -83,5 +83,10 @@ $ docker-compose down
 
 ## Ejecución tests
 
-- Integración: `$ behave`
 - Unitarios:`$ python -m pytest tests`
+- Integración: `$ behave`
+
+### Cobertura 
+
+- Reporte: `$ coverage run -m pytest tests/ && coverage run -a -m behave && coverage report -m`
+- HTML: `$ coverage html`

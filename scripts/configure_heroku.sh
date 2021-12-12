@@ -5,4 +5,4 @@ set -e
 
 heroku apps:create $APP_NAME
 heroku addons:create heroku-postgresql:hobby-dev --app $APP_NAME
-# heroku config:set FASTAPI_POSTGRESQL=postgres+psycopg2://<DATABASE_URL> --app $APP_NAME
+heroku config:set HOST_SUBSCRIPTIONS_API=<host> --app $APP_NAME
