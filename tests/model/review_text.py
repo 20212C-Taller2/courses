@@ -11,7 +11,7 @@ class TestReview(unittest.TestCase):
 
         self.assertIsInstance(review.grade, int)
         self.assertIsInstance(review.user, str)
-        self.assertIsInstance(review.role, str)
+        self.assertIsInstance(review.feedback, str)
 
     def test_review_grade_should_be_greater_than_zero(self):
         def review_grade_not_positive(grade: int):
