@@ -24,7 +24,10 @@ target_metadata = BaseModelDb.metadata
 # ... etc.
 
 def get_url():
-    return os.environ["DATABASE_URL"]
+    uri = os.environ["DATABASE_URL"]
+    if uri.startswith("postgres://"):
+        return uri.replace("postgres://", "postgresql://", 1)
+    return uri
 
 
 def run_migrations_offline():
