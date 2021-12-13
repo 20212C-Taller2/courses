@@ -15,4 +15,4 @@ class CourseNotFoundError(CourseError):
 
 class CoursesNotFoundError(CourseError):
     def __init__(self):
-        super(CoursesNotFoundError, self).__init__('COURSES_NOT_FOUND', f'Courses not found')
+        super(CoursesNotFoundError, self).__init__('COURSES_NOT_FOUND', 'Courses not found')

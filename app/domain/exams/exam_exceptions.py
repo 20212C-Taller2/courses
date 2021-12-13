@@ -15,4 +15,4 @@ class ExamsNotFoundError(ExamError):
 
 class SubmittedExamsNotFoundError(ExamError):
     def __init__(self):
-        super(SubmittedExamsNotFoundError, self).__init__('SUBMITTED_EXAMS_NOT_FOUND', f'No submitted exams found')
+        super(SubmittedExamsNotFoundError, self).__init__('SUBMITTED_EXAMS_NOT_FOUND', 'No submitted exams found')
