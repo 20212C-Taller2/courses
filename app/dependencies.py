@@ -1,14 +1,21 @@
-from app.adapters.http.subscriptions.subscriptions_service import SubscriptionsService
-from app.db.database import SessionLocal
+from functools import lru_cache
+from typing import Iterator
+
+from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.conf.config import Settings
+from app.db.database import get_session_factory
 
 
-def get_db():
-    db = SessionLocal()
+@lru_cache()
+def get_settings():
+    return Settings()
+
+
+def get_session() -> Iterator[Session]:
+    session = get_session_factory()()
     try:
-        yield db
+        yield session
     finally:
-        db.close()
-
-
-def get_subscriptions_service() -> SubscriptionsService:
-    return SubscriptionsService()
+        session.close()
