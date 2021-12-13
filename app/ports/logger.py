@@ -1,10 +1,10 @@
 import logging.config
 
-from app.conf.config import settings
+from app.dependencies import get_settings
 
 logging.config.fileConfig('app/conf/logging.conf', disable_existing_loggers=False)
 logging.basicConfig(
-    level=settings.LOG_LEVEL
+    level=get_settings().LOG_LEVEL
 )
 
 logger = logging.getLogger(__name__)
