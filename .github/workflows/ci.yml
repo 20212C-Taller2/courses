@@ -6,6 +6,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
+      LOG_LEVEL: INFO
+      HOST_SUBSCRIPTIONS_API: https://ubademy-subscriptions-api.herokuapp.com
       COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_COURSES_TOKEN }}
       COV_OUTFILE: coverage.xml
       DATABASE_USER: postgres
