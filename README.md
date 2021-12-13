@@ -1,5 +1,7 @@
 # API Cursos
 
+[![Coverage Status](https://coveralls.io/repos/github/20212C-Taller2/courses/badge.svg?branch=develop)](https://coveralls.io/github/20212C-Taller2/courses?branch=develop)
+
 Repositorio para la API Rest de Cursos de Ubademy
 
 Desarrollada con Python y FastAPI
