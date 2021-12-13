@@ -1,7 +1,6 @@
 from functools import lru_cache
 from typing import Iterator
 
-from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from app.conf.config import Settings
