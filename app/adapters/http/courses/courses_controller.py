@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 from starlette.responses import Response
 
 from app.adapters.database.courses import sql_course_repository
-from app.adapters.http.subscriptions.subscriptions_service import SubscriptionsService
-from app.dependencies import get_db, get_subscriptions_service
+from app.adapters.http.subscriptions.subscriptions_service import SubscriptionsService, get_subscriptions_service
+from app.dependencies import get_session
 from app.domain.courses import courses
 from app.domain.courses.course_type import CourseType
 from app.domain.courses.subscription import Subscription
@@ -23,13 +23,13 @@ router = APIRouter(
 @router.get("", response_model=List[courses.Course], status_code=status.HTTP_200_OK)
 def read_courses(type: Optional[CourseType] = None, subscription: Optional[str] = None,
                  creator: Optional[str] = None, skip: int = 0, limit: int = 100,
-                 db: Session = Depends(get_db)):
+                 db: Session = Depends(get_session)):
     logger.info(f'Consultando cursos')
     return sql_course_repository.get_courses(db, type, subscription, creator, skip=skip, limit=limit)
 
 
 @router.post("", response_model=courses.Course, status_code=status.HTTP_201_CREATED)
-def create_course(course: courses.CourseCreate, db: Session = Depends(get_db),
+def create_course(course: courses.CourseCreate, db: Session = Depends(get_session),
                   subscriptions_service: SubscriptionsService = Depends(get_subscriptions_service)):
     Subscription.exists(subscriptions_service, course.subscription)
 
@@ -42,17 +42,17 @@ def get_course_types():
 
 
 @router.get("/{course_id}", response_model=courses.Course, status_code=status.HTTP_200_OK)
-def get_course(course_id: int, db: Session = Depends(get_db)):
+def get_course(course_id: int, db: Session = Depends(get_session)):
     return sql_course_repository.get_course(db, course_id)
 
 
 @router.patch("/{course_id}", response_model=courses.Course, status_code=status.HTTP_200_OK)
-def edit_course(course_id: int, course: courses.CourseBase, db: Session = Depends(get_db)):
+def edit_course(course_id: int, course: courses.CourseBase, db: Session = Depends(get_session)):
     return sql_course_repository.update_course(db, course_id, course)
 
 
 @router.post("/{course_id}/{role}/{user_id}", status_code=status.HTTP_201_CREATED)
-def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depends(get_db)):
+def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depends(get_session)):
     course = sql_course_repository.get_course(db, course_id)
 
     # TODO: validar existencia de usuario contra API Users
@@ -67,7 +67,7 @@ def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depe
 
 @router.get("/{role}/{user_id}", response_model=List[courses.Course], status_code=status.HTTP_200_OK)
 def get_courses_for_user_by_role(role: str, user_id: str, skip: int = 0, limit: int = 100,
-                                 db: Session = Depends(get_db)):
+                                 db: Session = Depends(get_session)):
     if role == 'students':
         return sql_course_repository.get_courses_for_student(db, user_id, skip, limit)
     elif role == 'collaborators':
@@ -75,7 +75,7 @@ def get_courses_for_user_by_role(role: str, user_id: str, skip: int = 0, limit: 
 
 
 @router.delete("/{course_id}/students/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-def leave_course(course_id: int, user_id: str, db: Session = Depends(get_db)):
+def leave_course(course_id: int, user_id: str, db: Session = Depends(get_session)):
     sql_course_repository.delete_enrollment(db, course_id, user_id)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
