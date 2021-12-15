@@ -1,6 +1,9 @@
 # API Cursos
 
 [![Coverage Status](https://coveralls.io/repos/github/20212C-Taller2/courses/badge.svg?branch=develop)](https://coveralls.io/github/20212C-Taller2/courses?branch=develop)
+![test workflow](https://github.com/20212C-Taller2/courses/actions/workflows/ci.yml/badge.svg)
+![dev deploy workflow](https://github.com/20212C-Taller2/courses/actions/workflows/develop.yml/badge.svg)
+![deploy workflow](https://github.com/20212C-Taller2/courses/actions/workflows/main.yml/badge.svg)
 
 Repositorio para la API Rest de Cursos de Ubademy
 
