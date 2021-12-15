@@ -24,7 +24,7 @@ router = APIRouter(
 def read_courses(type: Optional[CourseType] = None, subscription: Optional[str] = None,
                  creator: Optional[str] = None, skip: int = 0, limit: int = 100,
                  db: Session = Depends(get_session)):
-    logger.info(f'Consultando cursos')
+    logger.info('Consultando cursos')
     return sql_course_repository.get_courses(db, type, subscription, creator, skip=skip, limit=limit)
 
 
