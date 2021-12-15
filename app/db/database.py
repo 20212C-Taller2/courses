@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from app.conf.config import Settings, settings
+from app.conf.config import settings
 
 
 def get_database_url(uri: str) -> str:
@@ -14,6 +14,8 @@ def get_database_url(uri: str) -> str:
 engine = create_engine(
     get_database_url(settings.DATABASE_URL)
 )
+
+
 def get_session_factory():
     return sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
