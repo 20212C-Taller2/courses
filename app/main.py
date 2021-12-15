@@ -1,6 +1,7 @@
 import subprocess
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.adapters.http.courses import courses_controller, exams_controller
 from app.adapters.http.courses.exceptions_handler import course_error_exception_handler, \
@@ -23,6 +24,14 @@ subprocess.run(
 app = FastAPI(
     title="Courses API",
     version=get_settings().VERSION
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(exams_controller.router)
