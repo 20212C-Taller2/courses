@@ -37,6 +37,13 @@ Característica: Edición de examen
     Entonces el examen será actualizado con esta nueva información
 
   @wip
-  Escenario: Edición de examen fallida
-    Cuando un creador edite los datos/información de un examen no publicado de manera incorrecta o exista alguna falla en el sistema
+  Esquema del escenario: Edición de examen fallida
+    Cuando un creador edite los datos de un examen no publicado sin el campo "<campo>"
     Entonces no se editará el examen y se le informará al usuario el error correspondiente
+
+    Ejemplos:
+
+      | campo     |
+      | title     |
+      | published |
+      | questions |

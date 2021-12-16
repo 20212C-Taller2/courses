@@ -9,7 +9,7 @@ Repositorio para la API Rest de Cursos de Ubademy
 
 Desarrollada con Python y FastAPI
 
-Esta version base de pruebas integra:
+Esta versión base de pruebas integra:
 
 vunicorn con FastApi + Postgres para recuperar items insertados en una base de datos.
 
