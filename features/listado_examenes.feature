@@ -10,25 +10,23 @@ Característica: Listado de Exámenes
     Y un estudiante inscripto
     Y resuelve el examen
 
-  @wip
-  Escenario: Listado de exámenes para creador
-    Cuando un creador lista los exámenes y no selecciona ningún filtro
+  Esquema del escenario: Listado de exámenes para creador y colaboradores
+    Cuando un "<rol>" lista los exámenes y no selecciona ningún filtro
     Entonces se listarán en pantalla todos los exámenes que ha creado, corregido o debe corregir
 
-  @wip
-  Escenario: Listado de exámenes con filtros para creador
-    Cuando un creador lista los exámenes y selecciona algún filtro
-    Entonces se listaran en pantalla todos los exámenes que cumplan dicho filtro
+    Ejemplos:
+      | rol          |
+      | creator      |
+      | collaborator |
 
-  @wip
-  Escenario: Listado de exámenes para colaborador
-    Cuando un colaborador lista los exámenes y no selecciona ningún filtro
-    Entonces se listaran en pantalla todos los exámenes que ha corregido o debe corregir
+  Esquema del escenario: Listado de exámenes con filtros para creador y colaboradores
+    Cuando un "<rol>" lista los exámenes y filtra por el campo "<campo_req>" con el valor "<valor>"
+    Entonces se listaran en pantalla todos los exámenes que cumplan el filtro "<campo_res>" con el valor "<valor>"
 
-  @wip
-  Escenario: Listado de exámenes con filtros para colaborador
-    Cuando un colaborador lista los exámenes y no selecciona algun filtro
-    Entonces se listaran en pantalla todos los exámenes que cumplan dicho filtro
+    Ejemplos:
+      | rol          | campo_req  | campo_res | valor               |
+      | creator      | student_id | student   | student@example.com |
+      | collaborator | exam_id    | exam_id   | 1                   |
 
   @wip
   Escenario: Listado de examen fallida
