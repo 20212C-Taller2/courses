@@ -1,9 +1,11 @@
-from behave import when, then
+from behave import when, then, use_step_matcher, step
+
+use_step_matcher("re")
 
 from features.steps.support import json_headers
 
 
-@when(u'su creador asigna al usuario "{}" como colaborador')
+@when('su creador asigna al usuario "(?P<collaborator>.+)" como colaborador')
 def step_impl(context, collaborator):
     course = context.response.json()
 
@@ -27,3 +29,9 @@ def step_impl(context):
 
     assert context.response.status_code == 201
     assert context.vars['collaborator'] in course['collaborators']
+
+
+@step('su creador asigna al usuario "(?P<collaborator>.+)" como colaborador por duplicado')
+def step_impl(context, collaborator):
+    context.execute_steps(f'cuando su creador asigna al usuario "{collaborator}" como colaborador')
+    context.execute_steps(f'cuando su creador asigna al usuario "{collaborator}" como colaborador')

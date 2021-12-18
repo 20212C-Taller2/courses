@@ -24,3 +24,8 @@ Característica: Inscripción a Curso
     Cuando su creador asigna al usuario "collaborator@example.com" como colaborador
     Y el usuario "collaborator@example.com" solicita la inscripción al curso
     Entonces el flujo de inscripción no se completará con error "ERROR_COLLABORATOR_STUDENT_ENROLL"
+
+  Escenario: Inscripción duplicada
+    Dado que existe un curso
+    Cuando el usuario "alumno@example.com" solicita la inscripción al curso por duplicado
+    Entonces el flujo de inscripción no se completará con error "ERROR_STUDENT_ALREADY_ENROLLED"

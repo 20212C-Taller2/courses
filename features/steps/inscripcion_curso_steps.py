@@ -1,11 +1,11 @@
-from behave import when, then, use_step_matcher, step
+from behave import then, use_step_matcher, step
 
 use_step_matcher("re")
 
 from features.steps.support import json_headers
 
 
-@when('el usuario "(?P<student>.+)" solicita la inscripción al curso')
+@step('el usuario "(?P<student>.+)" solicita la inscripción al curso')
 def step_impl(context, student):
     course_id = context.vars['created']['id']
 
@@ -26,3 +26,9 @@ def step_impl(context, error_code):
 
     assert context.response.status_code == 409
     assert actual_error['code'] == error_code
+
+
+@step('el usuario "(?P<student>.+)" solicita la inscripción al curso por duplicado')
+def step_impl(context, student):
+    context.execute_steps(f'cuando el usuario "{student}" solicita la inscripción al curso')
+    context.execute_steps(f'cuando el usuario "{student}" solicita la inscripción al curso')

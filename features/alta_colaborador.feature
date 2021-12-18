@@ -19,3 +19,8 @@ Característica: Alta de colaborador en curso
     Cuando el usuario "student@example.com" solicita la inscripción al curso
     Y su creador asigna al usuario "student@example.com" como colaborador
     Entonces el flujo de inscripción no se completará con error "ERROR_STUDENT_REGISTER"
+
+  Escenario: Alta colaborador duplicada
+    Dado que existe un curso
+    Cuando su creador asigna al usuario "colaborador@example.com" como colaborador por duplicado
+    Entonces el flujo de inscripción no se completará con error "ERROR_COLLABORATOR_ALREADY_ENROLLED"

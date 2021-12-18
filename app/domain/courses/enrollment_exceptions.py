@@ -30,3 +30,16 @@ class StudentRegisterError(EnrollmentError):
     def __init__(self, user_id: str):
         super(StudentRegisterError, self).__init__('ERROR_STUDENT_REGISTER',
                                                    f'Student {user_id} cannot register as collaborator')
+
+
+class StudentAlreadyEnrolledError(EnrollmentError):
+    def __init__(self, user_id: str):
+        super(StudentAlreadyEnrolledError, self).__init__('ERROR_STUDENT_ALREADY_ENROLLED',
+                                                          f'Student {user_id} is already enrolled in this course')
+
+
+class CollaboratorAlreadyRegisteredError(EnrollmentError):
+    def __init__(self, user_id: str):
+        super(CollaboratorAlreadyRegisteredError, self) \
+            .__init__('ERROR_COLLABORATOR_ALREADY_ENROLLED',
+                      f'Collaborator {user_id} is already registered in this course')
