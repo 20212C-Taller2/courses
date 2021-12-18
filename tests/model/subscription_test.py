@@ -13,10 +13,10 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(subscription.code, 'FREE')
 
     def test_invalid_subscription_not_in_subscriptions_should_raise(self):
-        subscriptions_service = Mock()
-        subscriptions_service.get_subscriptions.return_value = ['valid']
+        subscriptions_service_mock = Mock()
+        subscriptions_service_mock.get_subscriptions.return_value = ['valid']
 
         def invalid_subscription():
-            Subscription.exists(subscriptions_service, 'invalid')
+            Subscription.exists(subscriptions_service_mock, 'invalid')
 
         self.assertRaises(SubscriptionNotFoundError, invalid_subscription)

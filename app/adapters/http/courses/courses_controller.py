@@ -1,15 +1,19 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, status
+from fastapi import Security
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 from starlette.responses import Response
 
 from app.adapters.database.courses import sql_course_repository
 from app.adapters.http.subscriptions.subscriptions_service import SubscriptionsService, get_subscriptions_service
+from app.adapters.http.users.users_service import UsersService, get_users_service
 from app.dependencies import get_session
 from app.domain.courses import courses
 from app.domain.courses.course_type import CourseType
 from app.domain.courses.subscription import Subscription
+from app.domain.courses.user import User
 from app.ports.logger import logger
 
 router = APIRouter(
@@ -28,10 +32,24 @@ def read_courses(type: Optional[CourseType] = None, subscription: Optional[str] 
     return sql_course_repository.get_courses(db, type, subscription, creator, skip=skip, limit=limit)
 
 
+security = HTTPBearer()
+
+
 @router.post("", response_model=courses.Course, status_code=status.HTTP_201_CREATED)
-def create_course(course: courses.CourseCreate, db: Session = Depends(get_session),
-                  subscriptions_service: SubscriptionsService = Depends(get_subscriptions_service)):
+def create_course(course: courses.CourseCreate, authorization: HTTPAuthorizationCredentials = Security(security),
+                  db: Session = Depends(get_session),
+                  subscriptions_service: SubscriptionsService = Depends(get_subscriptions_service),
+                  # users_service: UsersService = Depends(get_users_service)
+                  ):
+    logger.info(f'Creación de nuevo curso por usuario {course.creator} con token {authorization}')
+    logger.debug(f'Auth: {authorization}')
+
+    users_service: UsersService = get_users_service(authorization.credentials)
+
     Subscription.exists(subscriptions_service, course.subscription)
+    User.exists(users_service, course.creator)
+
+    # TODO: enviar creador y id de curso a Suscripciones
 
     return sql_course_repository.create_course(db=db, course=course)
 
@@ -48,6 +66,7 @@ def get_course(course_id: int, db: Session = Depends(get_session)):
 
 @router.patch("/{course_id}", response_model=courses.Course, status_code=status.HTTP_200_OK)
 def edit_course(course_id: int, course: courses.CourseBase, db: Session = Depends(get_session)):
+    # TODO: validar que solo lo haga el creador
     return sql_course_repository.update_course(db, course_id, course)
 
 
@@ -56,6 +75,7 @@ def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depe
     course = sql_course_repository.get_course(db, course_id)
 
     # TODO: validar existencia de usuario contra API Users
+    # TODO: validar que el usuario ya no se encuentre en el caso => 409
 
     if role == 'students':
         course.enroll_student(user_id)
@@ -76,6 +96,7 @@ def get_courses_for_user_by_role(role: str, user_id: str, skip: int = 0, limit: 
 
 @router.delete("/{course_id}/students/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def leave_course(course_id: int, user_id: str, db: Session = Depends(get_session)):
+    # TODO: validar que hayan pasado menos de un día de la fecha de inscripción
     sql_course_repository.delete_enrollment(db, course_id, user_id)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

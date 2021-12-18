@@ -3,6 +3,7 @@ from starlette.responses import JSONResponse
 
 from app.domain.courses.course_exceptions import CourseError
 from app.domain.courses.subscription_exceptions import SubscriptionError
+from app.domain.courses.user_exceptions import UserError
 from app.domain.exams.exam_exceptions import ExamError
 from app.ports.logger import logger
 
@@ -26,3 +27,10 @@ async def subscription_error_exception_handler(
 ) -> JSONResponse:
     logger.error(f'SubscriptionError: {exc.__str__()}')
     return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, content=exc.__dict__)
+
+
+async def user_error_exception_handler(
+        _request: Request, exc: UserError
+) -> JSONResponse:
+    logger.error(f'UserError: {exc.__str__()}')
+    return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=exc.__dict__)
