@@ -7,8 +7,8 @@ from features.steps.support import json_headers
 
 @when('el usuario "(?P<student>.+)" solicita la inscripción al curso')
 def step_impl(context, student):
-    course = context.response.json()
     course_id = context.vars['created']['id']
+
     context.response = context.client.post(
         f"/courses/{course_id}/students/{student}",
         headers=json_headers()

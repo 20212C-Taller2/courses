@@ -18,3 +18,15 @@ class CollaboratorEnrollmentError(EnrollmentError):
     def __init__(self, user_id: str):
         super(CollaboratorEnrollmentError, self).__init__('ERROR_COLLABORATOR_STUDENT_ENROLL',
                                                           f'Collaborator {user_id} cannot enroll as student')
+
+
+class CreatorRegisterError(EnrollmentError):
+    def __init__(self, user_id: str):
+        super(CreatorRegisterError, self).__init__('ERROR_CREATOR_REGISTER',
+                                                   f'Creator {user_id} cannot register as collaborator')
+
+
+class StudentRegisterError(EnrollmentError):
+    def __init__(self, user_id: str):
+        super(StudentRegisterError, self).__init__('ERROR_STUDENT_REGISTER',
+                                                   f'Student {user_id} cannot register as collaborator')

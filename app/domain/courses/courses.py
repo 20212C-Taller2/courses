@@ -8,7 +8,8 @@ from pydantic import BaseModel, constr
 from pydantic.class_validators import List
 
 from app.domain.courses.course_type import CourseType
-from app.domain.courses.enrollment_exceptions import CreatorEnrollmentError, CollaboratorEnrollmentError
+from app.domain.courses.enrollment_exceptions import CreatorEnrollmentError, CollaboratorEnrollmentError, \
+    CreatorRegisterError, StudentRegisterError
 
 
 class CourseBase(BaseModel):
@@ -45,5 +46,10 @@ class Course(CourseCreate):
 
         self.students.add(new_student)
 
-    def register_collaborator(self, collaborator):
-        self.collaborators.add(collaborator)
+    def register_collaborator(self, new_collaborator):
+        if new_collaborator == self.creator:
+            raise CreatorRegisterError(new_collaborator)
+        elif new_collaborator in self.students:
+            raise StudentRegisterError(new_collaborator)
+
+        self.collaborators.add(new_collaborator)
