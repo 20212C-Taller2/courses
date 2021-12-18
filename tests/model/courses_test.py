@@ -4,6 +4,7 @@ from pydantic import ValidationError
 
 from app.domain.courses.course_type import CourseType
 from app.domain.courses.courses import CourseCreate
+from app.domain.courses.enrollment_exceptions import CreatorEnrollmentError, CollaboratorEnrollmentError
 from tests.examples.course_example import CourseExample
 
 
@@ -71,3 +72,22 @@ class TestCourseUseCases(unittest.TestCase):
         course.register_collaborator(collaborator)
 
         self.assertSetEqual(course.collaborators, {collaborator})
+
+    def test_course_should_not_allow_creator_to_enroll_as_student(self):
+        creator_id = 'creator@example.com'
+        course = CourseExample().with_creator(creator_id).build()
+
+        def enroll_creator_as_student():
+            course.enroll_student(creator_id)
+
+        self.assertRaises(CreatorEnrollmentError, enroll_creator_as_student)
+
+    def test_course_should_not_allow_collaborator_to_enroll_as_student(self):
+        collaborator_id = 'collaborator@example.com'
+        course = CourseExample().build()
+        course.register_collaborator(collaborator_id)
+
+        def enroll_collaborator_as_student():
+            course.enroll_student(collaborator_id)
+
+        self.assertRaises(CollaboratorEnrollmentError, enroll_collaborator_as_student)

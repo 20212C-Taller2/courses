@@ -10,11 +10,6 @@ class UsersService:
         self.host = get_settings().HOST_USERS_API
         self.token = token
 
-    def __call__(self, q: str = ""):
-        if q:
-            return self.fixed_content in q
-        return False
-
     def get_user_by_id(self, user_id: str) -> str:
         url = f"{self.host}/users/{user_id}"
 
