@@ -1,6 +1,9 @@
-from behave import given, when, then
+import requests_mock
+from behave import given, when, then, step, use_step_matcher
 
 from features.steps.support import create_course, json_headers, post_course
+
+use_step_matcher("re")
 
 
 @given(u'que un creador realiza un nuevo curso con')
@@ -81,10 +84,10 @@ def step_impl(context):
     assert context.response.status_code == 404
 
 
-@when(u'un creador realice un nuevo curso con "{}" faltante.')
-def step_impl(context, key):
+@step('un creador realice un nuevo curso con "(?P<campo>.+)" faltante\.')
+def step_impl(context, campo):
     course = create_course({})
-    del course[key]
+    del course[campo]
 
     context.response = post_course(context, course)
 
@@ -108,3 +111,46 @@ def step_impl(context):
 
     assert context.response.status_code == 200
     assert isinstance(body, list)
+
+
+@step('que el id de usuario "(?P<user_id>.+)" no existe')
+def step_impl(context, user_id):
+    context.vars['creator_id'] = user_id
+
+
+@step("intenta crear un curso")
+def step_impl(context):
+    creator_id = context.vars['creator_id']
+    new_course = create_course({"creator": creator_id})
+    subscription = new_course['subscription']
+
+    with requests_mock.Mocker(real_http=True) as m:
+        m.get(
+            'https://ubademy-subscriptions-api.herokuapp.com/subscriptions',
+            json=[{"code": f"{subscription}"}],
+            status_code=200,
+            headers=json_headers()
+        )
+
+        m.get(
+            f'https://ubademy-users-api.herokuapp.com/users/{creator_id}',
+            json={
+                "message": f"There is no user with id: {creator_id}"
+            },
+            headers=json_headers(),
+            status_code=404
+        )
+
+        context.response = context.client.post(
+            "/courses",
+            headers=json_headers(),
+            json=new_course
+        )
+
+
+@step('el sistema deberá informar el error con código "(?P<error_code>.+)"')
+def step_impl(context, error_code):
+    response = context.response.json()
+    print(response)
+    assert context.response.status_code == 400
+    assert response['code'] == error_code

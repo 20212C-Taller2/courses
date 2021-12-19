@@ -17,7 +17,7 @@ def step_impl(context):
 def step_impl(context):
     exam = context.vars['exam']
     context.vars['exam_submit'] = {
-        "student": context.vars['student']['id'],
+        "student": context.vars['student']['student_id'],
         "answers": [{"question_id": question['id'], "text": "answer"} for question in exam['questions']]
     }
 
@@ -40,7 +40,7 @@ def step_impl(context):
 def step_impl(context):
     course_id = context.vars['created']['id']
     exam_id = context.vars['exam']['id']
-    student_id = context.vars['student']['id']
+    student_id = context.vars['student']['student_id']
 
     context.response = context.client.post(
         "/courses/{}/exams/{}/students/{}".format(course_id, exam_id, student_id),

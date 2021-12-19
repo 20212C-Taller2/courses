@@ -4,6 +4,8 @@ from pydantic import ValidationError
 
 from app.domain.courses.course_type import CourseType
 from app.domain.courses.courses import CourseCreate
+from app.domain.courses.enrollment_exceptions import CreatorEnrollmentError, CollaboratorEnrollmentError, \
+    CreatorRegisterError, StudentRegisterError, StudentAlreadyEnrolledError, CollaboratorAlreadyRegisteredError
 from tests.examples.course_example import CourseExample
 
 
@@ -71,3 +73,62 @@ class TestCourseUseCases(unittest.TestCase):
         course.register_collaborator(collaborator)
 
         self.assertSetEqual(course.collaborators, {collaborator})
+
+    def test_course_should_not_allow_creator_to_enroll_as_student(self):
+        creator_id = 'creator@example.com'
+        course = CourseExample().with_creator(creator_id).build()
+
+        def enroll_creator_as_student():
+            course.enroll_student(creator_id)
+
+        self.assertRaises(CreatorEnrollmentError, enroll_creator_as_student)
+
+    def test_course_should_not_allow_collaborator_to_enroll_as_student(self):
+        collaborator_id = 'collaborator@example.com'
+        course = CourseExample().build()
+        course.register_collaborator(collaborator_id)
+
+        def enroll_collaborator_as_student():
+            course.enroll_student(collaborator_id)
+
+        self.assertRaises(CollaboratorEnrollmentError, enroll_collaborator_as_student)
+
+    def test_course_should_not_allow_creator_to_register_as_collaborator(self):
+        creator_id = 'creator@example.com'
+        course = CourseExample().with_creator(creator_id).build()
+
+        def register_creator_as_collaborator():
+            course.register_collaborator(creator_id)
+
+        self.assertRaises(CreatorRegisterError, register_creator_as_collaborator)
+
+    def test_course_should_not_allow_student_to_register_as_collaborator(self):
+        student_id = 'student@example.com'
+        course = CourseExample().build()
+        course.enroll_student(student_id)
+
+        def register_student_as_collaborator():
+            course.register_collaborator(student_id)
+
+        self.assertRaises(StudentRegisterError, register_student_as_collaborator)
+
+    def test_course_should_not_allow_student_to_be_enrolled_twice(self):
+        student = 'alumno@example.com'
+        course = CourseExample().build()
+
+        def enroll_student():
+            course.enroll_student(student)
+
+        enroll_student()
+        self.assertRaises(StudentAlreadyEnrolledError, enroll_student)
+
+    def test_course_should_not_allow_collaborator_to_be_enrolled_twice(self):
+        collaborator = 'collaborator@example.com'
+        course = CourseExample().build()
+
+        def register_collaborator():
+            course.register_collaborator(collaborator)
+
+        register_collaborator()
+
+        self.assertRaises(CollaboratorAlreadyRegisteredError, register_collaborator)

@@ -19,6 +19,10 @@ class CourseExample(object):
                       subscription=self.subscription, type=self.type, creator=self.creator,
                       location=self.location, tags=self.tags, media=self.media)
 
+    def with_id(self, new_id):
+        self.id = new_id
+        return self
+
     def with_title(self, value):
         self.title = value
         return self
@@ -33,6 +37,10 @@ class CourseExample(object):
 
     def with_type(self, value):
         self.type = value
+        return self
+
+    def with_creator(self, creator):
+        self.creator = creator
         return self
 
     def with_tags(self, value):

@@ -86,12 +86,18 @@ Detener container y eliminar imagen:
 $ docker-compose down
 ```
 
+## Linter
+
+```shell
+$ flake8
+```
+
 ## Ejecución tests
 
 - Unitarios:`$ python -m pytest tests`
 - Integración: `$ behave`
 
-### Cobertura 
+### Cobertura
 
 - Reporte: `$ coverage run -m pytest tests/ && coverage run -a -m behave && coverage report -m`
 - HTML: `$ coverage html`

@@ -8,12 +8,12 @@ from features.steps.support import create_course, json_headers, post_course
 def step_impl(context, key, value):
     course = create_course({key: value})
 
-    context.response = post_course(context, course)
+    context.vars['created'] = post_course(context, course).json()
 
 
 @when(u'su creador realice la edición del campo "{}" con el valor "{}"')
 def step_impl(context, key, new_value):
-    course = context.response.json()
+    course = context.vars['created']
     course[key] = new_value
 
     context.vars['new_value'] = new_value

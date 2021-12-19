@@ -46,3 +46,8 @@ Característica: Creación de curso
   Escenario: Consulta de tipos de cursos
     Cuando consulto los tipos de cursos que ofrece la plataforma
     Entonces recibo una lista con los distintos tipos de cursos
+
+  Escenario: Creación de curso con usuario inexistente
+    Dado que el id de usuario "creator@example.com" no existe
+    Cuando intenta crear un curso
+    Entonces el sistema deberá informar el error con código "CREATOR_NOT_FOUND"

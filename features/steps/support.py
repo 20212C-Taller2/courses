@@ -25,16 +25,39 @@ def parse_course(course: dict):
 def json_headers():
     return {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer 123.asd.!"#'
     }
 
 
 def post_course(context, new_course):
+    creator_id = new_course['creator'] if 'creator' in new_course else 'creator_id'
+    subscription = new_course['subscription'] if 'subscription' in new_course else 'subscription_code'
+
     with requests_mock.Mocker(real_http=True) as m:
         m.get(
             'https://ubademy-subscriptions-api.herokuapp.com/subscriptions',
-            json=[{"code": "free"}],
+            json=[{"code": f"{subscription}"}],
+            status_code=200,
             headers=json_headers()
+        )
+
+        m.get(
+            f'https://ubademy-users-api.herokuapp.com/users/{creator_id}',
+            json={
+                "id": f"{creator_id}"
+            },
+            status_code=200,
+            headers=json_headers()
+        )
+
+        m.post(
+            'https://ubademy-subscriptions-api.herokuapp.com/courses',
+            json={
+                "course_id": "1",
+                "owner_id": creator_id,
+                "subscription_code": subscription
+            }
         )
 
         return context.client.post(

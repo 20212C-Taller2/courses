@@ -2,12 +2,13 @@
 Modelos para el ORM de la base de datos
 """
 
-from sqlalchemy import Column, Integer, String, ForeignKey, ForeignKeyConstraint, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, ForeignKeyConstraint, Boolean, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import ARRAY
 
 from app.db.database import BaseModelDb
 from app.domain.courses.courses import Course as ModelCourse
+from app.domain.courses.enrollment import Enrollment
 from app.domain.exams.answer import Answer as AnswerModel
 from app.domain.exams.exams import Exam as ExamModel
 from app.domain.exams.questions import Question as QuestionModel
@@ -42,8 +43,8 @@ class Course(BaseModelDb):
             location=self.location,
             tags=self.tags,
             media=self.media,
-            students={student.id for student in self.students},
-            collaborators={student.id for student in self.collaborators},
+            students={student.student_id for student in self.students},
+            collaborators={collaborator.id for collaborator in self.collaborators},
             exams=[exam.to_entity() for exam in self.exams]
         )
 
@@ -51,8 +52,16 @@ class Course(BaseModelDb):
 class Student(BaseModelDb):
     __tablename__ = "students"
 
-    id = Column(String, primary_key=True)
+    student_id = Column(String, primary_key=True)
     course_id = Column(Integer, ForeignKey('courses.id'), primary_key=True)
+    enrollment_datetime = Column(DateTime, nullable=False)
+
+    def to_entity(self) -> Enrollment:
+        return Enrollment(
+            student_id=self.student_id,
+            course_id=self.course_id,
+            date_time=self.enrollment_datetime
+        )
 
 
 class Collaborator(BaseModelDb):
@@ -107,7 +116,7 @@ class SubmittedExam(BaseModelDb):
     review = relationship("RevisedExam", uselist=False, lazy="joined")
 
     __table_args__ = (ForeignKeyConstraint([student_id, course_id],
-                                           [Student.id, Student.course_id]),
+                                           [Student.student_id, Student.course_id]),
                       {})
 
     def to_entity(self) -> RevisedExamModel:
