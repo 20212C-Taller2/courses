@@ -1,16 +1,18 @@
-from behave import given, when, then
+from behave import given, when, then, step, use_step_matcher
+
+use_step_matcher("re")
 
 from features.steps.support import json_headers
 
 
-@given(u'el usuario "{}" se encuentra inscripto')
+@step('el usuario "(?P<student>.+)" se encuentra inscripto')
 def step_impl(context, student):
     course = context.response.json()
     context.vars['course_id'] = course['id']
     context.vars['student'] = student
 
     context.client.post(
-        "/courses/{}/students/{}".format(context.vars['course_id'], context.vars['student']),
+        f"/courses/{course['id']}/students/{context.vars['student']}",
         headers=json_headers()
     )
 
@@ -35,3 +37,16 @@ def step_impl(context):
     course = response.json()
 
     assert context.vars['student'] not in course['students']
+
+
+@step("que transcurrió un día desde su inscripción")
+def step_impl(context):
+    raise NotImplementedError(u'STEP: Y que transcurrió un día desde su inscripción')
+
+
+@step('el flujo de desinscripción no se completará con el error "(?P<error_code>.+)"')
+def step_impl(context, error_code):
+    error_body = context.response.json()
+
+    assert context.response.status_code == 409
+    assert error_body['code'] == error_code

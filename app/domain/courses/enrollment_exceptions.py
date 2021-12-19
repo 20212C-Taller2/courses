@@ -43,3 +43,9 @@ class CollaboratorAlreadyRegisteredError(EnrollmentError):
         super(CollaboratorAlreadyRegisteredError, self) \
             .__init__('ERROR_COLLABORATOR_ALREADY_ENROLLED',
                       f'Collaborator {user_id} is already registered in this course')
+
+
+class UnenrollmentDateOverdueError(EnrollmentError):
+    def __init__(self):
+        super(UnenrollmentDateOverdueError, self).__init__('ERROR_UNENROLLMENT_DATE_OVERDUE',
+                                                           'Cannot unenroll from course past one day from enrollment')

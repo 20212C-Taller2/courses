@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, status
@@ -13,6 +14,7 @@ from app.adapters.http.users.users_service import UsersService, get_users_servic
 from app.dependencies import get_session
 from app.domain.courses import courses
 from app.domain.courses.course_type import CourseType
+from app.domain.courses.enrollment_exceptions import UnenrollmentDateOverdueError
 from app.domain.courses.subscription import Subscription
 from app.domain.courses.subscription_exceptions import SubscriptionCreationError
 from app.domain.courses.user import User
@@ -104,7 +106,11 @@ def get_courses_for_user_by_role(role: str, user_id: str, skip: int = 0, limit: 
 
 @router.delete("/{course_id}/students/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def leave_course(course_id: int, user_id: str, db: Session = Depends(get_session)):
-    # TODO: validar que hayan pasado menos de un día de la fecha de inscripción
-    sql_course_repository.delete_enrollment(db, course_id, user_id)
+    enrollment = sql_course_repository.get_enrollment(db, course_id, user_id)
 
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    if (datetime.now() - enrollment.date_time).days >= 1:
+        raise UnenrollmentDateOverdueError()
+    else:
+        sql_course_repository.delete_enrollment(db, course_id, user_id)
+
+        return Response(status_code=status.HTTP_204_NO_CONTENT)

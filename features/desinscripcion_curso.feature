@@ -14,5 +14,6 @@ Característica: Desinscripción a curso
 
   @wip
   Escenario: Desinscripción fallida
-    Cuando se rechacen las condiciones para la desinscripción a la suscripción o el sistema rechaza su desinscripción.
-    Entonces no se deberá el flujo de desinscripción en el curso
+    Y que transcurrió un día desde su inscripción
+    Cuando solicita la desinscripción a un curso
+    Entonces el flujo de desinscripción no se completará con el error "ERROR_UNENROLLMENT_DATE_OVERDUE"
