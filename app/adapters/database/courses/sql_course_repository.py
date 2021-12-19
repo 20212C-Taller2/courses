@@ -78,6 +78,12 @@ def save_enrollment(db: Session, enrollment: Enrollment):
     return db_student.to_entity()
 
 
+def get_enrollment(db: Session, course_id: int, user_id: str) -> Enrollment:
+    db_enrollment = db.query(model.Student).get((user_id, course_id))
+
+    return db_enrollment.to_entity()
+
+
 def delete_enrollment(db, course_id, user_id):
     enrollment = db.query(model.Student).get((user_id, course_id))
 
