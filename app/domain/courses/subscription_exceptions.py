@@ -11,3 +11,9 @@ class SubscriptionError(Exception):
 class SubscriptionNotFoundError(SubscriptionError):
     def __init__(self, name: str):
         super(SubscriptionNotFoundError, self).__init__('SUBSCRIPTION_NOT_FOUND', f'Subscription {name} not found')
+
+
+class SubscriptionCreationError(SubscriptionError):
+    def __init__(self):
+        super(SubscriptionCreationError, self).__init__('SUBSCRIPTION_CREATION_ERROR',
+                                                        'Subscription for course cannot be created')

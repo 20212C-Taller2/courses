@@ -3,7 +3,7 @@ from starlette.responses import JSONResponse
 
 from app.domain.courses.course_exceptions import CourseError
 from app.domain.courses.enrollment_exceptions import EnrollmentError
-from app.domain.courses.subscription_exceptions import SubscriptionError
+from app.domain.courses.subscription_exceptions import SubscriptionError, SubscriptionCreationError
 from app.domain.courses.user_exceptions import UserError
 from app.domain.exams.exam_exceptions import ExamError
 from app.ports.logger import logger
@@ -21,6 +21,13 @@ async def course_error_exception_handler(
 ) -> JSONResponse:
     logger.error(f'CourseError: {exc.__str__()}')
     return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=exc.__dict__)
+
+
+async def subscription_creation_error_exception_handler(
+        _req: Request, exc: SubscriptionCreationError
+) -> JSONResponse:
+    logger.error(f'SubscriptionCreationError: {exc.__str__()}')
+    return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=exc.__dict__)
 
 
 async def subscription_error_exception_handler(

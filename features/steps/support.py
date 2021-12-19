@@ -51,6 +51,15 @@ def post_course(context, new_course):
             headers=json_headers()
         )
 
+        m.post(
+            'https://ubademy-subscriptions-api.herokuapp.com/courses',
+            json={
+                "course_id": "1",
+                "owner_id": creator_id,
+                "subscription_code": subscription
+            }
+        )
+
         return context.client.post(
             "/courses",
             headers=json_headers(),

@@ -7,11 +7,11 @@ from features.steps.support import json_headers
 
 @when('su creador asigna al usuario "(?P<collaborator>.+)" como colaborador')
 def step_impl(context, collaborator):
-    course = context.response.json()
+    #course = context.response.json()
 
     course_id = context.vars['created']['id']
-    context.vars['course_id'] = course['id']
     context.vars['collaborator'] = collaborator
+
     context.response = context.client.post(
         f"/courses/{course_id}/collaborators/{context.vars['collaborator']}",
         headers=json_headers()
@@ -20,8 +20,10 @@ def step_impl(context, collaborator):
 
 @then(u'será asignado a cumplir dicha función en el curso')
 def step_impl(context):
+    course_id = context.vars['created']['id']
+
     response = context.client.get(
-        f"/courses/{context.vars['course_id']}",
+        f"/courses/{course_id}",
         headers=json_headers()
     )
 

@@ -123,3 +123,10 @@ def get_courses_for_collaborator(db: Session, user_id: str, skip: int = 0, limit
         raise CoursesNotFoundError()
 
     return [db_course.to_entity() for db_course in db_courses]
+
+
+def delete_course(db, course: Course):
+    db_course = db.query(model.Course).get(course.id)
+
+    db.delete(db_course)
+    db.commit()

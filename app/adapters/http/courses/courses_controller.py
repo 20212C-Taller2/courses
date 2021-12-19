@@ -3,6 +3,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, status
 from fastapi import Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from requests import HTTPError
 from sqlalchemy.orm import Session
 from starlette.responses import Response
 
@@ -13,6 +14,7 @@ from app.dependencies import get_session
 from app.domain.courses import courses
 from app.domain.courses.course_type import CourseType
 from app.domain.courses.subscription import Subscription
+from app.domain.courses.subscription_exceptions import SubscriptionCreationError
 from app.domain.courses.user import User
 from app.ports.logger import logger
 
@@ -41,17 +43,24 @@ def create_course(course: courses.CourseCreate, authorization: HTTPAuthorization
                   subscriptions_service: SubscriptionsService = Depends(get_subscriptions_service),
                   # users_service: UsersService = Depends(get_users_service)
                   ):
-    logger.info(f'Creación de nuevo curso por usuario {course.creator} con token {authorization}')
-    logger.debug(f'Auth: {authorization}')
+    try:
+        logger.info(f'Creación de nuevo curso por usuario {course.creator} con token {authorization}')
+        logger.debug(f'Auth: {authorization}')
 
-    users_service: UsersService = get_users_service(authorization.credentials)
+        users_service: UsersService = get_users_service(authorization.credentials)
 
-    Subscription.exists(subscriptions_service, course.subscription)
-    User.exists(users_service, course.creator)
+        Subscription.exists(subscriptions_service, course.subscription)
+        User.exists(users_service, course.creator)
 
-    # TODO: enviar creador y id de curso a Suscripciones
+        created_course = sql_course_repository.create_course(db=db, course=course)
 
-    return sql_course_repository.create_course(db=db, course=course)
+        subscriptions_service.create_subscription_for_course(created_course)
+
+        return created_course
+    except HTTPError as httpErr:
+        logger.error(f'HTTPError: {httpErr.__str__()} invocando Users API')
+        sql_course_repository.delete_course(db=db, course=course)
+        raise SubscriptionCreationError()
 
 
 @router.get("/types", response_model=List[str], status_code=status.HTTP_200_OK)

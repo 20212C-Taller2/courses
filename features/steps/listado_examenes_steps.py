@@ -7,8 +7,10 @@ use_step_matcher("re")
 
 @step('un "(?P<rol>.+)" lista los exámenes y no selecciona ningún filtro')
 def step_impl(context, rol):
+    course_id = context.vars['created']['id']
+
     context.response = context.client.get(
-        f"/courses/{context.vars['course_id']}/exams/submissions",
+        f"/courses/{course_id}/exams/submissions",
         headers=json_headers()
     )
 
@@ -24,8 +26,10 @@ def step_impl(context):
 
 @step('un "(?P<rol>.+)" lista los exámenes y filtra por el campo "(?P<campo>.+)" con el valor "(?P<valor>.+)"')
 def step_impl(context, rol, campo, valor):
+    course_id = context.vars['created']['id']
+
     context.response = context.client.get(
-        f"/courses/{context.vars['course_id']}/exams/submissions?{campo}={valor}",
+        f"/courses/{course_id}/exams/submissions?{campo}={valor}",
         headers=json_headers()
     )
 
