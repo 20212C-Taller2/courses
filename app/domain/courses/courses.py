@@ -8,6 +8,7 @@ from pydantic import BaseModel, constr
 from pydantic.class_validators import List
 
 from app.domain.courses.course_type import CourseType
+from app.domain.courses.enrollment import Enrollment
 from app.domain.courses.enrollment_exceptions import CreatorEnrollmentError, CollaboratorEnrollmentError, \
     CreatorRegisterError, StudentRegisterError, StudentAlreadyEnrolledError, CollaboratorAlreadyRegisteredError
 
@@ -38,7 +39,7 @@ class Course(CourseCreate):
     class Config:
         orm_mode = True
 
-    def enroll_student(self, new_student):
+    def enroll_student(self, new_student) -> Enrollment:
         if self.creator == new_student:
             raise CreatorEnrollmentError(new_student)
         elif new_student in self.collaborators:
@@ -47,6 +48,8 @@ class Course(CourseCreate):
             raise StudentAlreadyEnrolledError(new_student)
 
         self.students.add(new_student)
+
+        return Enrollment(student_id=new_student, course_id=self.id)
 
     def register_collaborator(self, new_collaborator):
         if new_collaborator == self.creator:

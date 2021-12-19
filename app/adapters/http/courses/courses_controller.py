@@ -84,11 +84,10 @@ def enroll_to_course(course_id: int, role: str, user_id: str, db: Session = Depe
     course = sql_course_repository.get_course(db, course_id)
 
     # TODO: validar existencia de usuario contra API Users
-    # TODO: validar que el usuario ya no se encuentre en el caso => 409
 
     if role == 'students':
-        course.enroll_student(user_id)
-        return sql_course_repository.save_enrollment(db, course_id, user_id)
+        enrollment = course.enroll_student(user_id)
+        return sql_course_repository.save_enrollment(db, enrollment)
     elif role == 'collaborators':
         course.register_collaborator(user_id)
         return sql_course_repository.save_collaborator(db, course_id, user_id)
