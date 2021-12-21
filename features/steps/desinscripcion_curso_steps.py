@@ -1,4 +1,5 @@
-from behave import given, when, then, step, use_step_matcher
+import requests_mock
+from behave import when, then, step, use_step_matcher
 
 use_step_matcher("re")
 
@@ -11,20 +12,50 @@ def step_impl(context, student):
     context.vars['course_id'] = course['id']
     context.vars['student'] = student
 
-    context.client.post(
-        f"/courses/{course['id']}/students/{context.vars['student']}",
-        headers=json_headers()
-    )
+    with requests_mock.Mocker(real_http=True) as m:
+        m.get(
+            f'https://ubademy-users-api.herokuapp.com/users/{student}',
+            json={
+                "id": f"{student}"
+            },
+            status_code=200,
+            headers=json_headers()
+        )
+
+        m.post(
+            f"https://ubademy-subscriptions-api.herokuapp.com/courses/{course['id']}/subscribeStudent",
+            json={
+                "course_id": f"{course['id']}",
+                "owner_id": f"{student}",
+                "subscription_code": "subscription_code"
+            },
+            headers=json_headers()
+        )
+
+        context.client.post(
+            f"/courses/{course['id']}/students/{student}",
+            headers=json_headers()
+        )
 
 
 @when(u'solicita la desinscripción a un curso')
 def step_impl(context):
-    context.response = context.client.delete(
-        "/courses/{}/students/{}".format(context.vars['course_id'], context.vars['student']),
-        headers=json_headers()
-    )
+    course_id = context.vars['course_id']
+    student_id = context.vars['student']
 
-    assert context.response.status_code == 204
+    with requests_mock.Mocker(real_http=True) as m:
+        m.delete(
+            f'https://ubademy-subscriptions-api.herokuapp.com/courses/{course_id}/subscribeStudent/{student_id}',
+            status_code=200,
+            headers=json_headers()
+        )
+
+        context.response = context.client.delete(
+            "/courses/{}/students/{}".format(course_id, student_id),
+            headers=json_headers()
+        )
+
+        assert context.response.status_code == 204
 
 
 @then(u'se deberá ejecutar el flujo correspondiente para establecer dicha desinscripción.')

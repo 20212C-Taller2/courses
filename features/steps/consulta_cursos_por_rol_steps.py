@@ -1,5 +1,6 @@
 from urllib.parse import urlencode
 
+import requests_mock
 from behave import given, when, then
 
 from features.steps.support import json_headers
@@ -30,10 +31,31 @@ def step_impl(context, creator_key):
 def step_impl(context, role, user_id):
     course_id = context.response.json()['id']
     context.vars['userId'] = user_id
-    context.response = context.client.post(
-        "/courses/{}/{}/{}".format(course_id, role, user_id),
-        headers=json_headers()
-    )
+
+    with requests_mock.Mocker(real_http=True) as m:
+        m.get(
+            f'https://ubademy-users-api.herokuapp.com/users/{user_id}',
+            json={
+                "id": f"{user_id}"
+            },
+            status_code=200,
+            headers=json_headers()
+        )
+
+        m.post(
+            f"https://ubademy-subscriptions-api.herokuapp.com/courses/{course_id}/subscribeStudent",
+            json={
+                "course_id": f"{course_id}",
+                "owner_id": "owner@example.com",
+                "subscription_code": "subscription_code"
+            },
+            headers=json_headers()
+        )
+
+        context.response = context.client.post(
+            f"/courses/{course_id}/{role}/{user_id}",
+            headers=json_headers()
+        )
 
     assert context.response.status_code == 201
 

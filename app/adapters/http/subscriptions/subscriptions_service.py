@@ -31,8 +31,29 @@ class SubscriptionsService:
         response.raise_for_status()
 
         logger.info(
-            f'Subscripción {course.subscription} creada para usuario {course.creator} por el curso {course.id}')
+            f'Suscripción {course.subscription} creada para usuario {course.creator} por el curso {course.id}')
         return response.json()
+
+    def subscribe_student(self, course: Course, student_id: str):
+        url = f"{self.host}/courses/{course.id}/subscribeStudent"
+
+        body = {
+            "subscriber_id": student_id
+        }
+
+        response = requests.post(url, json=body)
+        response.raise_for_status()
+
+        logger.info(f'Inscripción del estudiante {student_id} al curso {course.id} enviada')
+        return response.json()
+
+    def unsubscribe_student(self, course_id: int, student_id: str):
+        url = f"{self.host}/courses/{course_id}/subscribeStudent/{student_id}"
+
+        response = requests.delete(url)
+        response.raise_for_status()
+
+        logger.info(f'Desinscripción del estudiante {student_id} al curso {course_id} enviada')
 
 
 def get_subscriptions_service() -> SubscriptionsService:

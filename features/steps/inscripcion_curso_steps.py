@@ -1,3 +1,4 @@
+import requests_mock
 from behave import then, use_step_matcher, step
 
 use_step_matcher("re")
@@ -9,10 +10,30 @@ from features.steps.support import json_headers
 def step_impl(context, student):
     course_id = context.vars['created']['id']
 
-    context.response = context.client.post(
-        f"/courses/{course_id}/students/{student}",
-        headers=json_headers()
-    )
+    with requests_mock.Mocker(real_http=True) as m:
+        m.get(
+            f'https://ubademy-users-api.herokuapp.com/users/{student}',
+            json={
+                "id": f"{student}"
+            },
+            status_code=200,
+            headers=json_headers()
+        )
+
+        m.post(
+            f"https://ubademy-subscriptions-api.herokuapp.com/courses/{course_id}/subscribeStudent",
+            json={
+                "course_id": f"{course_id}",
+                "owner_id": "owner@example.com",
+                "subscription_code": "subscription_code"
+            },
+            headers=json_headers()
+        )
+
+        context.response = context.client.post(
+            f"/courses/{course_id}/students/{student}",
+            headers=json_headers()
+        )
 
 
 @then(u'se deberá ejecutar el flujo correspondiente para establecer dicha inscripción.')

@@ -18,6 +18,7 @@ class UsersService:
                                 )
         if response.ok:
             user = response.json()
+            logger.info('Invocación a API Usuarios exitosa')
 
             return user['id']
         else:
