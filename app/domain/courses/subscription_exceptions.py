@@ -17,3 +17,15 @@ class SubscriptionCreationError(SubscriptionError):
     def __init__(self):
         super(SubscriptionCreationError, self).__init__('SUBSCRIPTION_CREATION_ERROR',
                                                         'Subscription for course cannot be created')
+
+
+class StudentSubscriptionCreationError(SubscriptionError):
+    def __init__(self):
+        super(StudentSubscriptionCreationError, self).__init__('_STUDENT_SUBSCRIPTION_CREATION_ERROR',
+                                                               'Subscription for student cannot be created')
+
+
+class StudentSubscriptionDeletionError(SubscriptionError):
+    def __init__(self):
+        super(StudentSubscriptionDeletionError, self).__init__('_STUDENT_SUBSCRIPTION_CREATION_ERROR',
+                                                               'Subscription for student cannot be deleted')

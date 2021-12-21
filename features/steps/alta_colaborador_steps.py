@@ -1,3 +1,4 @@
+import requests_mock
 from behave import when, then, use_step_matcher, step
 
 use_step_matcher("re")
@@ -7,15 +8,23 @@ from features.steps.support import json_headers
 
 @when('su creador asigna al usuario "(?P<collaborator>.+)" como colaborador')
 def step_impl(context, collaborator):
-    #course = context.response.json()
-
     course_id = context.vars['created']['id']
     context.vars['collaborator'] = collaborator
 
-    context.response = context.client.post(
-        f"/courses/{course_id}/collaborators/{context.vars['collaborator']}",
-        headers=json_headers()
-    )
+    with requests_mock.Mocker(real_http=True) as m:
+        m.get(
+            f'https://ubademy-users-api.herokuapp.com/users/{collaborator}',
+            json={
+                "id": f"{collaborator}"
+            },
+            status_code=200,
+            headers=json_headers()
+        )
+
+        context.response = context.client.post(
+            f"/courses/{course_id}/collaborators/{collaborator}",
+            headers=json_headers()
+        )
 
 
 @then(u'será asignado a cumplir dicha función en el curso')

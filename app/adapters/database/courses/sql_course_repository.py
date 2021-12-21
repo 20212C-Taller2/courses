@@ -11,12 +11,12 @@ from app.domain.courses.courses import Course
 from app.domain.courses.enrollment import Enrollment
 
 
-def get_courses(db: Session, type: CourseType, subscription: str, creator: str,
+def get_courses(db: Session, course_type: CourseType, subscription: str, creator: str,
                 skip: int = 0, limit: int = 100) -> List[Course]:
     query = db.query(model.Course).order_by(model.Course.id)
 
-    if type:
-        query = query.filter(model.Course.type == type)
+    if course_type:
+        query = query.filter(model.Course.type == course_type)
 
     if subscription:
         query = query.filter(model.Course.subscription == subscription)
@@ -24,12 +24,12 @@ def get_courses(db: Session, type: CourseType, subscription: str, creator: str,
     if creator:
         query = query.filter(model.Course.creator == creator)
 
-    courses = query.offset(skip).limit(limit).all()
+    db_courses = query.offset(skip).limit(limit).all()
 
-    if len(courses) == 0:
+    if len(db_courses) == 0:
         raise CoursesNotFoundError()
 
-    return [course.to_entity() for course in courses]
+    return [db_course.to_entity() for db_course in db_courses]
 
 
 def create_course(db: Session, course: courses.CourseCreate):
@@ -84,7 +84,7 @@ def get_enrollment(db: Session, course_id: int, user_id: str) -> Enrollment:
     return db_enrollment.to_entity()
 
 
-def delete_enrollment(db, course_id, user_id):
+def delete_enrollment(db, course_id: int, user_id: str):
     enrollment = db.query(model.Student).get((user_id, course_id))
 
     db.delete(enrollment)
@@ -126,7 +126,7 @@ def get_courses_for_collaborator(db: Session, user_id: str, skip: int = 0, limit
 
     db_collaborators = query.offset(skip).limit(limit).all()
 
-    db_courses = [collaborator.course for collaborator in db_collaborators]
+    db_courses = [db_collaborator.course for db_collaborator in db_collaborators]
 
     if len(db_courses) == 0:
         raise CoursesNotFoundError()
