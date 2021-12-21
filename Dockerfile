@@ -1,7 +1,7 @@
 # Dockerfile
 
 # pull the official docker image
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
+FROM python:3.8
 
 # Install Heroku GPG dependencies
 RUN apt-get install -y gpg apt-transport-https gpg-agent curl ca-certificates
@@ -24,7 +24,7 @@ RUN apt-get update && apt-get -y --force-yes install --reinstall datadog-agent
 # set work directory
 WORKDIR /app
 
-COPY scripts/heroku-entrypoint.sh ./
+COPY app alembic alembic.ini scripts/heroku-entrypoint.sh ./
 
 # set env variables
 
