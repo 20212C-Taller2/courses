@@ -24,7 +24,9 @@ RUN apt-get update && apt-get -y --force-yes install --reinstall datadog-agent
 # set work directory
 WORKDIR /app
 
-COPY alembic app/ scripts/heroku-entrypoint.sh alembic.ini Procfile ./
+COPY scripts/heroku-entrypoint.sh alembic.ini Procfile /app/
+COPY alembic /app/alembic
+COPY app /app/app
 # Copy Datadog configuration
 COPY scripts/datadog-config/ /etc/datadog-agent/
 
