@@ -20,7 +20,7 @@ services:
     ports:
       - "8008:8000"
     environment:
-        FASTAPI_POSTGRESQL: "postgresql+psycopg2://postgres:example@dev_db:5432/postgres"
+      DATABASE_URL: "postgresql://postgres:example@dev_db:5432/postgres"
     depends_on:
       - dev_db
     networks:

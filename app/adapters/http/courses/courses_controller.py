@@ -124,7 +124,8 @@ def leave_course(course_id: int, user_id: str, db: Session = Depends(get_session
         if (datetime.now() - enrollment.date_time).days > UNENROLLMENT_DEADLINE:
             raise UnenrollmentDateOverdueError()
         else:
-            subscriptions_service.unsubscribe_student(course_id, user_id)
+            course = sql_course_repository.get_course(db, course_id)
+            subscriptions_service.unsubscribe_student(course, user_id)
             sql_course_repository.delete_enrollment(db, course_id, user_id)
 
             return Response(status_code=status.HTTP_204_NO_CONTENT)
