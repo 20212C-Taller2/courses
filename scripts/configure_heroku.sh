@@ -12,7 +12,18 @@ heroku config:set HOST_USERS_API=<host> --app $APP_NAME
 
 # DataDog
 # Enable Heroku Labs Dyno Metadata to set HEROKU_APP_NAME env variable automatically
-# heroku labs:enable runtime-dyno-metadata -a $APP_NAME
+# Use the latest major Agent version
+heroku config:add DD_AGENT_MAJOR_VERSION=7
+
+# Enable Heroku Labs Dyno Metadata to set HEROKU_APP_NAME env variable automatically
+heroku labs:enable runtime-dyno-metadata --app $APP_NAME
+
+# Set hostname in Datadog as appname.dynotype.dynonumber for metrics continuity
+heroku config:add DD_DYNO_HOST=true --app $APP_NAME
+
+# Add this buildpack and set your Datadog API key
+heroku buildpacks:add --index 1 https://github.com/DataDog/heroku-buildpack-datadog.git --app $APP_NAME
+
 heroku config:set DD_API_KEY=<datadog_api_key> --app $APP_NAME
 heroku config:set DD_DYNO_HOST=false --app $APP_NAME
 heroku config:set DD_APM_ENABLED=true --app $APP_NAME
