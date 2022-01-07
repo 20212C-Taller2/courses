@@ -1,7 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 services:
   dev_db:
+    container_name: dev_db
     image: postgres
     environment:
       POSTGRES_PASSWORD: example
@@ -11,16 +12,17 @@ services:
       - "7432:5432"
 
   web:
+    container_name: courses-api
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.local
     command: uvicorn app.main:app --reload --host 0.0.0.0
     volumes:
       - .:/app
     ports:
       - "8008:8000"
     environment:
-      DATABASE_URL: "postgresql://postgres:example@dev_db:5432/postgres"
+      DATABASE_URL: "postgres://postgres:example@dev_db:5432/postgres"
     depends_on:
       - dev_db
     networks:
