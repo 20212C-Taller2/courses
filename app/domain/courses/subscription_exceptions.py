@@ -21,11 +21,17 @@ class SubscriptionCreationError(SubscriptionError):
 
 class StudentSubscriptionCreationError(SubscriptionError):
     def __init__(self):
-        super(StudentSubscriptionCreationError, self).__init__('_STUDENT_SUBSCRIPTION_CREATION_ERROR',
+        super(StudentSubscriptionCreationError, self).__init__('STUDENT_SUBSCRIPTION_CREATION_ERROR',
                                                                'Subscription for student cannot be created')
 
 
 class StudentSubscriptionDeletionError(SubscriptionError):
     def __init__(self):
-        super(StudentSubscriptionDeletionError, self).__init__('_STUDENT_SUBSCRIPTION_CREATION_ERROR',
+        super(StudentSubscriptionDeletionError, self).__init__('STUDENT_SUBSCRIPTION_DELETION_ERROR',
                                                                'Subscription for student cannot be deleted')
+
+
+class StudentHasNoAvailableSubscriptionError(SubscriptionError):
+    def __init__(self, s: str):
+        super(StudentHasNoAvailableSubscriptionError, self).__init__('STUDENT_SUBSCRIPTION_NOT_AVAILABLE',
+                                                                     f'Subscription {s} not available for student')
